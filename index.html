@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taylor Swift - Toute la Musique</title>
+    <title>Taylor Swift - Musique</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -25,6 +25,8 @@
             background-color: var(--dark);
             color: var(--light);
             min-height: 100vh;
+            display: flex;
+            flex-direction: column;
         }
         
         header {
@@ -32,6 +34,8 @@
             padding: 1.5rem;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10;
         }
         
         .logo {
@@ -45,21 +49,26 @@
         
         .main-container {
             display: flex;
-            min-height: calc(100vh - 200px);
+            flex-direction: column;
+            flex: 1;
         }
         
-        .sidebar {
-            width: 300px;
+        .albums-container {
             background-color: rgba(26, 26, 46, 0.8);
-            padding: 1.5rem;
-            border-right: 1px solid rgba(255, 255, 255, 0.1);
-            overflow-y: auto;
+            padding: 1rem;
+            overflow-x: auto;
+            scrollbar-width: none;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .albums-container::-webkit-scrollbar {
+            display: none;
         }
         
         .album-list {
             display: flex;
-            flex-direction: column;
             gap: 1.5rem;
+            padding: 0.5rem;
         }
         
         .album-card {
@@ -68,6 +77,8 @@
             overflow: hidden;
             transition: all 0.3s;
             cursor: pointer;
+            min-width: 150px;
+            flex-shrink: 0;
         }
         
         .album-card:hover {
@@ -87,23 +98,27 @@
         }
         
         .album-info {
-            padding: 1rem;
+            padding: 0.8rem;
         }
         
         .album-title {
             font-weight: bold;
             margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
         
         .album-year {
-            font-size: 0.8rem;
+            font-size: 0.7rem;
             opacity: 0.7;
         }
         
-        .content {
+        .songs-container {
             flex: 1;
-            padding: 2rem;
             overflow-y: auto;
+            padding: 1rem;
         }
         
         .song-list {
@@ -166,10 +181,6 @@
         }
         
         .player-container {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
             background: linear-gradient(135deg, var(--primary), var(--secondary));
             padding: 1rem;
             display: flex;
@@ -266,30 +277,32 @@
             width: 120px;
         }
         
+        .album-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .album-header-cover {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        
+        .album-header-info h2 {
+            margin-bottom: 0.3rem;
+        }
+        
+        .album-header-info p {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+        
         @media (max-width: 768px) {
-            .main-container {
-                flex-direction: column;
-            }
-            
-            .sidebar {
-                width: 100%;
-                max-height: 200px;
-            }
-            
-            .album-list {
-                flex-direction: row;
-                overflow-x: auto;
-                scrollbar-width: none;
-            }
-            
-            .album-list::-webkit-scrollbar {
-                display: none;
-            }
-            
-            .album-card {
-                min-width: 150px;
-            }
-            
             .player-container {
                 flex-wrap: wrap;
                 padding: 0.5rem;
@@ -304,6 +317,11 @@
             .volume-container {
                 display: none;
             }
+            
+            .album-header {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
@@ -314,7 +332,7 @@
     </header>
     
     <div class="main-container">
-        <div class="sidebar">
+        <div class="albums-container">
             <div class="album-list">
                 <!-- Album 1 -->
                 <div class="album-card active" data-album="taylorswift">
@@ -417,8 +435,15 @@
             </div>
         </div>
         
-        <div class="content">
-            <h2>Taylor Swift (2006)</h2>
+        <div class="songs-container">
+            <div class="album-header">
+                <img src="https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png" alt="Taylor Swift" class="album-header-cover">
+                <div class="album-header-info">
+                    <h2>Taylor Swift</h2>
+                    <p>2006 • 15 chansons • 53:28</p>
+                </div>
+            </div>
+            
             <div class="song-list">
                 <!-- Song 1 -->
                 <div class="song-item playing" data-song="timshel">
@@ -516,24 +541,56 @@
                 title: "Taylor Swift",
                 year: "2006",
                 cover: "https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png",
+                duration: "53:28",
                 songs: [
                     { number: 1, title: "Tim McGraw", duration: "3:52" },
                     { number: 2, title: "Picture To Burn", duration: "2:53" },
                     { number: 3, title: "Teardrops On My Guitar", duration: "3:35" },
                     { number: 4, title: "Should've Said No", duration: "4:04" },
-                    { number: 5, title: "Our Song", duration: "3:24" }
+                    { number: 5, title: "Our Song", duration: "3:24" },
+                    { number: 6, title: "A Place in This World", duration: "3:22" },
+                    { number: 7, title: "Cold as You", duration: "4:01" },
+                    { number: 8, title: "The Outside", duration: "3:29" },
+                    { number: 9, title: "Tied Together with a Smile", duration: "4:11" },
+                    { number: 10, title: "Stay Beautiful", duration: "3:58" },
+                    { number: 11, title: "Mary's Song (Oh My My My)", duration: "3:35" },
+                    { number: 12, title: "I'm Only Me When I'm with You", duration: "3:35" },
+                    { number: 13, title: "Invisible", duration: "3:23" },
+                    { number: 14, title: "A Perfectly Good Heart", duration: "3:42" }
                 ]
             },
             "fearless": {
                 title: "Fearless (Taylor's Version)",
                 year: "2021",
                 cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
+                duration: "1:46:20",
                 songs: [
                     { number: 1, title: "Fearless", duration: "4:01" },
                     { number: 2, title: "Fifteen", duration: "4:54" },
                     { number: 3, title: "Love Story", duration: "3:55" },
                     { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" }
+                    { number: 5, title: "White Horse", duration: "3:54" },
+                    { number: 6, title: "You Belong With Me", duration: "3:51" },
+                    { number: 7, title: "Breathe", duration: "4:23" },
+                    { number: 8, title: "Tell Me Why", duration: "3:20" },
+                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
+                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
+                    { number: 11, title: "Forever & Always", duration: "3:45" },
+                    { number: 12, title: "The Best Day", duration: "4:05" },
+                    { number: 13, title: "Change", duration: "4:40" },
+                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
+                    { number: 15, title: "Untouchable", duration: "5:12" },
+                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
+                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
+                    { number: 18, title: "Superstar", duration: "4:23" },
+                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
+                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
+                    { number: 21, title: "You All Over Me", duration: "3:40" },
+                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
+                    { number: 23, title: "We Were Happy", duration: "4:04" },
+                    { number: 24, title: "That's When", duration: "3:09" },
+                    { number: 25, title: "Don't You", duration: "3:28" },
+                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
                 ]
             },
             // Ajoutez les autres albums de la même manière
@@ -541,15 +598,13 @@
 
         // Script pour gérer la lecture des musiques
         document.addEventListener('DOMContentLoaded', function() {
-            const playButtons = document.querySelectorAll('.play-btn');
             const playPauseBtn = document.querySelector('.play-pause-btn');
             const progressBar = document.querySelector('.progress');
             const progressContainer = document.querySelector('.progress-bar');
             const timeEls = document.querySelectorAll('.time');
             const volumeSlider = document.querySelector('.volume-slider');
-            const songItems = document.querySelectorAll('.song-item');
             const albumCards = document.querySelectorAll('.album-card');
-            const contentSection = document.querySelector('.content');
+            const songsContainer = document.querySelector('.songs-container');
             
             // Simuler un lecteur audio
             let isPlaying = true;
@@ -577,16 +632,16 @@
             
             // Jouer la chanson suivante
             function playNextSong() {
-                const currentSongIndex = Array.from(songItems).findIndex(item => item.classList.contains('playing'));
-                if (currentSongIndex < songItems.length - 1) {
-                    playSong(songItems[currentSongIndex + 1]);
+                const currentSongItem = document.querySelector('.song-item.playing');
+                if (currentSongItem && currentSongItem.nextElementSibling) {
+                    playSong(currentSongItem.nextElementSibling);
                 }
             }
             
             // Jouer une chanson spécifique
             function playSong(songItem) {
                 // Retirer la classe 'playing' de toutes les chansons
-                songItems.forEach(item => {
+                document.querySelectorAll('.song-item').forEach(item => {
                     item.classList.remove('playing');
                     item.querySelector('.play-btn i').className = 'fas fa-play';
                 });
@@ -599,7 +654,7 @@
                 const songTitle = songItem.querySelector('.song-title').textContent;
                 document.querySelector('.player-song-title').textContent = songTitle;
                 
-                const albumTitle = document.querySelector('.content h2').textContent;
+                const albumTitle = document.querySelector('.album-header-info h2').textContent;
                 document.querySelector('.player-album-title').textContent = albumTitle;
                 
                 // Réinitialiser la progression
@@ -634,11 +689,16 @@
                 const album = albumsData[albumId];
                 if (!album) return;
                 
-                // Mettre à jour le titre de l'album
-                contentSection.querySelector('h2').textContent = `${album.title} (${album.year})`;
-                
-                // Mettre à jour la pochette dans le lecteur
-                document.querySelector('.player-album-cover').src = album.cover;
+                // Mettre à jour l'en-tête de l'album
+                const albumHeader = `
+                    <div class="album-header">
+                        <img src="${album.cover}" alt="${album.title}" class="album-header-cover">
+                        <div class="album-header-info">
+                            <h2>${album.title}</h2>
+                            <p>${album.year} • ${album.songs.length} chansons • ${album.duration}</p>
+                        </div>
+                    </div>
+                `;
                 
                 // Générer la liste des chansons
                 const songListHTML = album.songs.map(song => `
@@ -652,7 +712,10 @@
                     </div>
                 `).join('');
                 
-                contentSection.querySelector('.song-list').innerHTML = songListHTML;
+                songsContainer.innerHTML = albumHeader + '<div class="song-list">' + songListHTML + '</div>';
+                
+                // Mettre à jour la pochette dans le lecteur
+                document.querySelector('.player-album-cover').src = album.cover;
                 
                 // Réattacher les événements aux nouvelles chansons
                 document.querySelectorAll('.song-item').forEach(item => {
@@ -672,27 +735,15 @@
                         }
                     });
                 });
+                
+                // Jouer la première chanson automatiquement
+                const firstSong = document.querySelector('.song-item');
+                if (firstSong) {
+                    playSong(firstSong);
+                }
             }
             
             // Événements
-            playButtons.forEach(button => {
-                button.addEventListener('click', function(e) {
-                    e.stopPropagation();
-                    const songItem = this.closest('.song-item');
-                    if (songItem.classList.contains('playing')) {
-                        togglePlay();
-                    } else {
-                        playSong(songItem);
-                    }
-                });
-            });
-            
-            songItems.forEach(item => {
-                item.addEventListener('click', function() {
-                    playSong(this);
-                });
-            });
-            
             playPauseBtn.addEventListener('click', togglePlay);
             
             progressContainer.addEventListener('click', function(e) {
@@ -725,6 +776,16 @@
                     loadAlbumSongs(albumId);
                 });
             });
+            
+            // Contrôles du lecteur
+            document.querySelector('.control-btn .fa-step-backward').closest('.control-btn').addEventListener('click', function() {
+                const currentSongItem = document.querySelector('.song-item.playing');
+                if (currentSongItem && currentSongItem.previousElementSibling) {
+                    playSong(currentSongItem.previousElementSibling);
+                }
+            });
+            
+            document.querySelector('.control-btn .fa-step-forward').closest('.control-btn').addEventListener('click', playNextSong);
             
             // Mettre à jour la barre de progression toutes les secondes
             setInterval(updateProgress, 1000);
