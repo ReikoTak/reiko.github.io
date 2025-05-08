@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taylor Swift - Toute la Musique</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #E10075;
+            --secondary: #9A208C;
+            --dark: #1A1A2E;
+            --light: #F5F5F5;
+            --accent: #FFD700;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+        }
+        
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+        }
+        
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--accent), white);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .tagline {
+            font-style: italic;
+            opacity: 0.9;
+        }
+        
+        .era-nav {
+            display: flex;
+            overflow-x: auto;
+            padding: 1rem 0;
+            gap: 1rem;
+            background-color: rgba(0, 0, 0, 0.2);
+            scrollbar-width: none;
+        }
+        
+        .era-nav::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .era-btn {
+            padding: 0.5rem 1.2rem;
+            border-radius: 20px;
+            border: none;
+            background-color: rgba(255, 255, 255, 0.1);
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s;
+        }
+        
+        .era-btn:hover, .era-btn.active {
+            background-color: var(--accent);
+            color: var(--dark);
+            transform: scale(1.05);
+        }
+        
+        .main-container {
+            display: flex;
+            min-height: calc(100vh - 200px);
+        }
+        
+        .sidebar {
+            width: 300px;
+            background-color: rgba(26, 26, 46, 0.8);
+            padding: 1.5rem;
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            overflow-y: auto;
+        }
+        
+        .album-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+        
+        .album-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .album-card:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            transform: translateY(-3px);
+        }
+        
+        .album-card.active {
+            background-color: rgba(225, 0, 117, 0.3);
+            border-left: 4px solid var(--accent);
+        }
+        
+        .album-cover {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .album-info {
+            padding: 1rem;
+        }
+        
+        .album-title {
+            font-weight: bold;
+            margin-bottom: 0.3rem;
+        }
+        
+        .album-year {
+            font-size: 0.8rem;
+            opacity: 0.7;
+        }
+        
+        .content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+        
+        .song-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        
+        .song-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.03);
+            transition: all 0.2s;
+        }
+        
+        .song-item:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .song-item.playing {
+            background-color: rgba(225, 0, 117, 0.2);
+            border-left: 3px solid var(--accent);
+        }
+        
+        .song-number {
+            width: 30px;
+            opacity: 0.7;
+        }
+        
+        .song-title {
+            flex: 1;
+            font-weight: 500;
+        }
+        
+        .song-duration {
+            width: 60px;
+            text-align: right;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+        
+        .play-btn {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--accent);
+            color: var(--dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.1);
+        }
+        
+        .player-container {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            z-index: 100;
+            box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .player-album-cover {
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            object-fit: cover;
+        }
+        
+        .player-info {
+            flex: 1;
+            min-width: 0;
+        }
+        
+        .player-song-title {
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .player-album-title {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .player-controls {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .control-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .control-btn:hover {
+            color: var(--accent);
+            transform: scale(1.1);
+        }
+        
+        .play-pause-btn {
+            font-size: 1.8rem;
+        }
+        
+        .progress-container {
+            flex: 2;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .progress-bar {
+            flex: 1;
+            height: 5px;
+            background-color: rgba(255, 255, 255, 0.3);
+            border-radius: 5px;
+            cursor: pointer;
+            overflow: hidden;
+        }
+        
+        .progress {
+            height: 100%;
+            background-color: var(--accent);
+            width: 0%;
+            border-radius: 5px;
+        }
+        
+        .time {
+            font-size: 0.8rem;
+            opacity: 0.8;
+            min-width: 40px;
+        }
+        
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            width: 120px;
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: 200px;
+            }
+            
+            .album-list {
+                flex-direction: row;
+                overflow-x: auto;
+                scrollbar-width: none;
+            }
+            
+            .album-list::-webkit-scrollbar {
+                display: none;
+            }
+            
+            .album-card {
+                min-width: 150px;
+            }
+            
+            .player-container {
+                flex-wrap: wrap;
+                padding: 0.5rem;
+            }
+            
+            .progress-container {
+                order: 1;
+                flex: 1 0 100%;
+                padding: 0 0.5rem;
+            }
+            
+            .volume-container {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">TAYLOR SWIFT</div>
+        <div class="tagline">Toute la musique en un seul endroit</div>
+    </header>
+    
+    <div class="era-nav">
+        <button class="era-btn active" data-era="all">Tout</button>
+        <button class="era-btn" data-era="debut">Début (2006-2008)</button>
+        <button class="era-btn" data-era="fearless">Fearless (2008-2010)</button>
+        <button class="era-btn" data-era="speaknow">Speak Now (2010-2012)</button>
+        <button class="era-btn" data-era="red">Red (2012-2014)</button>
+        <button class="era-btn" data-era="1989">1989 (2014-2017)</button>
+        <button class="era-btn" data-era="reputation">Reputation (2017-2019)</button>
+        <button class="era-btn" data-era="lover">Lover (2019-2020)</button>
+        <button class="era-btn" data-era="folklore">Folklore (2020)</button>
+        <button class="era-btn" data-era="evermore">Evermore (2020)</button>
+        <button class="era-btn" data-era="midnights">Midnights (2022)</button>
+        <button class="era-btn" data-era="taylorsversion">Taylor's Version</button>
+    </div>
+    
+    <div class="main-container">
+        <div class="sidebar">
+            <div class="album-list">
+                <!-- Album 1 -->
+                <div class="album-card active" data-album="taylorswift">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png" alt="Taylor Swift" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">Taylor Swift</div>
+                        <div class="album-year">2006</div>
+                    </div>
+                </div>
+                
+                <!-- Album 2 -->
+                <div class="album-card" data-album="fearless">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png" alt="Fearless (Taylor's Version)" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">Fearless (Taylor's Version)</div>
+                        <div class="album-year">2021</div>
+                    </div>
+                </div>
+                
+                <!-- Album 3 -->
+                <div class="album-card" data-album="speaknow">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/8/8f/Taylor_Swift_-_Speak_Now_%28Taylor%27s_Version%29.png" alt="Speak Now (Taylor's Version)" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">Speak Now (Taylor's Version)</div>
+                        <div class="album-year">2023</div>
+                    </div>
+                </div>
+                
+                <!-- Album 4 -->
+                <div class="album-card" data-album="red">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/4/47/Taylor_Swift_-_Red_%28Taylor%27s_Version%29.png" alt="Red (Taylor's Version)" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">Red (Taylor's Version)</div>
+                        <div class="album-year">2021</div>
+                    </div>
+                </div>
+                
+                <!-- Album 5 -->
+                <div class="album-card" data-album="1989">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/2/2e/Taylor_Swift_-_1989_%28Taylor%27s_Version%29.png" alt="1989 (Taylor's Version)" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">1989 (Taylor's Version)</div>
+                        <div class="album-year">2023</div>
+                    </div>
+                </div>
+                
+                <!-- Album 6 -->
+                <div class="album-card" data-album="reputation">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/Taylor_Swift_-_Reputation.png" alt="Reputation" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">Reputation</div>
+                        <div class="album-year">2017</div>
+                    </div>
+                </div>
+                
+                <!-- Album 7 -->
+                <div class="album-card" data-album="lover">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/c/cd/Taylor_Swift_-_Lover.png" alt="Lover" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">Lover</div>
+                        <div class="album-year">2019</div>
+                    </div>
+                </div>
+                
+                <!-- Album 8 -->
+                <div class="album-card" data-album="folklore">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/f/f8/Taylor_Swift_-_Folklore.png" alt="Folklore" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">Folklore</div>
+                        <div class="album-year">2020</div>
+                    </div>
+                </div>
+                
+                <!-- Album 9 -->
+                <div class="album-card" data-album="evermore">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Taylor_Swift_-_Evermore.png" alt="Evermore" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">Evermore</div>
+                        <div class="album-year">2020</div>
+                    </div>
+                </div>
+                
+                <!-- Album 10 -->
+                <div class="album-card" data-album="midnights">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/9/9f/Midnights_-_Taylor_Swift.png" alt="Midnights" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">Midnights</div>
+                        <div class="album-year">2022</div>
+                    </div>
+                </div>
+                
+                <!-- Album 11 -->
+                <div class="album-card" data-album="torturedpoets">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/4/4f/The_Tortured_Poets_Department_%28album%29.png" alt="The Tortured Poets Department" class="album-cover">
+                    <div class="album-info">
+                        <div class="album-title">The Tortured Poets Department</div>
+                        <div class="album-year">2024</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content">
+            <h2>Taylor Swift (2006)</h2>
+            <div class="song-list">
+                <!-- Song 1 -->
+                <div class="song-item playing" data-song="timshel">
+                    <div class="play-btn">
+                        <i class="fas fa-pause"></i>
+                    </div>
+                    <div class="song-number">1</div>
+                    <div class="song-title">Tim McGraw</div>
+                    <div class="song-duration">3:52</div>
+                </div>
+                
+                <!-- Song 2 -->
+                <div class="song-item" data-song="picturetoburn">
+                    <div class="play-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="song-number">2</div>
+                    <div class="song-title">Picture To Burn</div>
+                    <div class="song-duration">2:53</div>
+                </div>
+                
+                <!-- Song 3 -->
+                <div class="song-item" data-song="teardrops">
+                    <div class="play-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="song-number">3</div>
+                    <div class="song-title">Teardrops On My Guitar</div>
+                    <div class="song-duration">3:35</div>
+                </div>
+                
+                <!-- Song 4 -->
+                <div class="song-item" data-song="shouldvesaidno">
+                    <div class="play-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="song-number">4</div>
+                    <div class="song-title">Should've Said No</div>
+                    <div class="song-duration">4:04</div>
+                </div>
+                
+                <!-- Song 5 -->
+                <div class="song-item" data-song="ourssong">
+                    <div class="play-btn">
+                        <i class="fas fa-play"></i>
+                    </div>
+                    <div class="song-number">5</div>
+                    <div class="song-title">Our Song</div>
+                    <div class="song-duration">3:24</div>
+                </div>
+                
+                <!-- Ajoutez d'autres chansons de la même manière -->
+            </div>
+        </div>
+    </div>
+    
+    <div class="player-container">
+        <img src="https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png" alt="Album Cover" class="player-album-cover">
+        
+        <div class="player-info">
+            <div class="player-song-title">Tim McGraw</div>
+            <div class="player-album-title">Taylor Swift</div>
+        </div>
+        
+        <div class="player-controls">
+            <button class="control-btn">
+                <i class="fas fa-step-backward"></i>
+            </button>
+            <button class="control-btn play-pause-btn">
+                <i class="fas fa-pause"></i>
+            </button>
+            <button class="control-btn">
+                <i class="fas fa-step-forward"></i>
+            </button>
+        </div>
+        
+        <div class="progress-container">
+            <span class="time">0:00</span>
+            <div class="progress-bar">
+                <div class="progress"></div>
+            </div>
+            <span class="time">3:52</span>
+        </div>
+        
+        <div class="volume-container">
+            <i class="fas fa-volume-up"></i>
+            <input type="range" min="0" max="100" value="80" class="volume-slider">
+        </div>
+    </div>
+
+    <script>
+        // Script pour gérer la lecture des musiques
+        document.addEventListener('DOMContentLoaded', function() {
+            const playButtons = document.querySelectorAll('.play-btn');
+            const playPauseBtn = document.querySelector('.play-pause-btn');
+            const progressBar = document.querySelector('.progress');
+            const progressContainer = document.querySelector('.progress-bar');
+            const timeEls = document.querySelectorAll('.time');
+            const volumeSlider = document.querySelector('.volume-slider');
+            const songItems = document.querySelectorAll('.song-item');
+            const albumCards = document.querySelectorAll('.album-card');
+            const eraBtns = document.querySelectorAll('.era-btn');
+            
+            // Simuler un lecteur audio (en réalité, il faudrait implémenter un vrai lecteur)
+            let isPlaying = true;
+            let currentTime = 0;
+            let duration = 232; // 3:52 en secondes
+            
+            // Mettre à jour la barre de progression
+            function updateProgress() {
+                if (isPlaying) {
+                    currentTime += 1;
+                    if (currentTime >= duration) {
+                        currentTime = 0;
+                        playNextSong();
+                    }
+                    
+                    const progressPercent = (currentTime / duration) * 100;
+                    progressBar.style.width = `${progressPercent}%`;
+                    
+                    // Mettre à jour le temps affiché
+                    const minutes = Math.floor(currentTime / 60);
+                    const seconds = Math.floor(currentTime % 60);
+                    timeEls[0].textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+                }
+            }
+            
+            // Jouer la chanson suivante
+            function playNextSong() {
+                const currentSongIndex = Array.from(songItems).findIndex(item => item.classList.contains('playing'));
+                if (currentSongIndex < songItems.length - 1) {
+                    playSong(songItems[currentSongIndex + 1]);
+                }
+            }
+            
+            // Jouer une chanson spécifique
+            function playSong(songItem) {
+                // Retirer la classe 'playing' de toutes les chansons
+                songItems.forEach(item => {
+                    item.classList.remove('playing');
+                    item.querySelector('.play-btn i').className = 'fas fa-play';
+                });
+                
+                // Ajouter la classe 'playing' à la chanson sélectionnée
+                songItem.classList.add('playing');
+                songItem.querySelector('.play-btn i').className = 'fas fa-pause';
+                
+                // Mettre à jour le lecteur avec les infos de la chanson
+                const songTitle = songItem.querySelector('.song-title').textContent;
+                document.querySelector('.player-song-title').textContent = songTitle;
+                
+                const albumTitle = document.querySelector('.content h2').textContent;
+                document.querySelector('.player-album-title').textContent = albumTitle;
+                
+                // Réinitialiser la progression
+                currentTime = 0;
+                progressBar.style.width = '0%';
+                timeEls[0].textContent = '0:00';
+                
+                // Mettre à jour la durée (en réalité, il faudrait récupérer la vraie durée)
+                const durationText = songItem.querySelector('.song-duration').textContent;
+                const [mins, secs] = durationText.split(':').map(Number);
+                duration = mins * 60 + secs;
+                timeEls[1].textContent = durationText;
+                
+                // Si le lecteur était en pause, le relancer
+                if (!isPlaying) {
+                    togglePlay();
+                }
+            }
+            
+            // Basculer entre lecture et pause
+            function togglePlay() {
+                isPlaying = !isPlaying;
+                if (isPlaying) {
+                    playPauseBtn.querySelector('i').className = 'fas fa-pause';
+                } else {
+                    playPauseBtn.querySelector('i').className = 'fas fa-play';
+                }
+            }
+            
+            // Événements
+            playButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    const songItem = this.closest('.song-item');
+                    if (songItem.classList.contains('playing')) {
+                        togglePlay();
+                    } else {
+                        playSong(songItem);
+                    }
+                });
+            });
+            
+            songItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    playSong(this);
+                });
+            });
+            
+            playPauseBtn.addEventListener('click', togglePlay);
+            
+            progressContainer.addEventListener('click', function(e) {
+                const width = this.clientWidth;
+                const clickX = e.offsetX;
+                const duration = 232; // 3:52 en secondes
+                currentTime = (clickX / width) * duration;
+                const progressPercent = (currentTime / duration) * 100;
+                progressBar.style.width = `${progressPercent}%`;
+                
+                const minutes = Math.floor(currentTime / 60);
+                const seconds = Math.floor(currentTime % 60);
+                timeEls[0].textContent = `${minutes}:${seconds < 10 ? '0' + seconds : seconds}`;
+            });
+            
+            volumeSlider.addEventListener('input', function() {
+                // En réalité, cela ajusterait le volume du lecteur audio
+                console.log(`Volume set to ${this.value}%`);
+            });
+            
+            albumCards.forEach(card => {
+                card.addEventListener('click', function() {
+                    // Retirer la classe 'active' de toutes les cartes d'album
+                    albumCards.forEach(c => c.classList.remove('active'));
+                    
+                    // Ajouter la classe 'active' à la carte sélectionnée
+                    this.classList.add('active');
+                    
+                    // Ici, vous chargeriez les chansons de l'album sélectionné
+                    const albumTitle = this.querySelector('.album-title').textContent;
+                    const albumYear = this.querySelector('.album-year').textContent;
+                    document.querySelector('.content h2').textContent = `${albumTitle} (${albumYear})`;
+                    
+                    // Simuler le chargement des chansons (en réalité, vous feriez une requête AJAX)
+                    console.log(`Chargement des chansons de ${albumTitle}`);
+                });
+            });
+            
+            eraBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    eraBtns.forEach(b => b.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filtrer les albums par ère (implémentation simplifiée)
+                    const era = this.dataset.era;
+                    console.log(`Filtrage des albums de l'ère ${era}`);
+                });
+            });
+            
+            // Mettre à jour la barre de progression toutes les secondes
+            setInterval(updateProgress, 1000);
+        });
+    </script>
+</body>
+</html>
