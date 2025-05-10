@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taylor Swift - Musique</title>
+    <title>Taylor Swift - Discographie Complète</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
@@ -34,8 +34,6 @@
             padding: 1.5rem;
             text-align: center;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            position: relative;
-            z-index: 10;
         }
         
         .logo {
@@ -118,66 +116,67 @@
         .songs-container {
             flex: 1;
             overflow-y: auto;
-            padding: 1rem;
+            padding: 2rem;
+            text-align: center;
         }
         
-        .song-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
+        .album-display {
+            max-width: 600px;
+            margin: 0 auto;
         }
         
-        .song-item {
-            display: flex;
-            align-items: center;
-            padding: 1rem;
-            border-radius: 5px;
-            background-color: rgba(255, 255, 255, 0.03);
-            transition: all 0.2s;
+        .album-display-cover {
+            width: 200px;
+            height: 200px;
+            border-radius: 10px;
+            object-fit: cover;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
         }
         
-        .song-item:hover {
+        .album-display-info h2 {
+            font-size: 1.8rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .album-display-info p {
+            opacity: 0.8;
+            margin-bottom: 2rem;
+        }
+        
+        .featured-song {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+            transition: all 0.3s;
+        }
+        
+        .featured-song:hover {
             background-color: rgba(255, 255, 255, 0.1);
         }
         
-        .song-item.playing {
-            background-color: rgba(225, 0, 117, 0.2);
-            border-left: 3px solid var(--accent);
+        .featured-song-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+            color: var(--accent);
         }
         
-        .song-number {
-            width: 30px;
-            opacity: 0.7;
-        }
-        
-        .song-title {
-            flex: 1;
-            font-weight: 500;
-        }
-        
-        .song-duration {
-            width: 60px;
-            text-align: right;
-            opacity: 0.7;
-            font-size: 0.9rem;
-        }
-        
-        .play-btn {
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
+        .featured-song-play {
             background-color: var(--accent);
             color: var(--dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-right: 1rem;
+            border: none;
+            padding: 0.8rem 2rem;
+            border-radius: 30px;
+            font-weight: bold;
+            margin-top: 1rem;
             cursor: pointer;
             transition: all 0.3s;
         }
         
-        .play-btn:hover {
-            transform: scale(1.1);
+        .featured-song-play:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
         }
         
         .player-container {
@@ -186,7 +185,6 @@
             display: flex;
             align-items: center;
             gap: 1.5rem;
-            z-index: 100;
             box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.3);
         }
         
@@ -277,31 +275,6 @@
             width: 120px;
         }
         
-        .album-header {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: 1.5rem;
-            padding-bottom: 1rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .album-header-cover {
-            width: 80px;
-            height: 80px;
-            border-radius: 5px;
-            object-fit: cover;
-        }
-        
-        .album-header-info h2 {
-            margin-bottom: 0.3rem;
-        }
-        
-        .album-header-info p {
-            opacity: 0.8;
-            font-size: 0.9rem;
-        }
-        
         @media (max-width: 768px) {
             .player-container {
                 flex-wrap: wrap;
@@ -318,9 +291,9 @@
                 display: none;
             }
             
-            .album-header {
-                flex-direction: column;
-                text-align: center;
+            .album-display-cover {
+                width: 150px;
+                height: 150px;
             }
         }
     </style>
@@ -328,13 +301,13 @@
 <body>
     <header>
         <div class="logo">TAYLOR SWIFT</div>
-        <div class="tagline">Toute la musique en un seul endroit</div>
+        <div class="tagline">Discographie Complète</div>
     </header>
     
     <div class="main-container">
         <div class="albums-container">
             <div class="album-list">
-                <!-- Album 1 -->
+                <!-- Taylor Swift -->
                 <div class="album-card active" data-album="taylorswift">
                     <img src="https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png" alt="Taylor Swift" class="album-cover">
                     <div class="album-info">
@@ -343,43 +316,43 @@
                     </div>
                 </div>
                 
-                <!-- Album 2 -->
+                <!-- Fearless -->
                 <div class="album-card" data-album="fearless">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png" alt="Fearless (Taylor's Version)" class="album-cover">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png" alt="Fearless" class="album-cover">
                     <div class="album-info">
-                        <div class="album-title">Fearless (Taylor's Version)</div>
-                        <div class="album-year">2021</div>
+                        <div class="album-title">Fearless</div>
+                        <div class="album-year">2008</div>
                     </div>
                 </div>
                 
-                <!-- Album 3 -->
+                <!-- Speak Now -->
                 <div class="album-card" data-album="speaknow">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/8/8f/Taylor_Swift_-_Speak_Now_%28Taylor%27s_Version%29.png" alt="Speak Now (Taylor's Version)" class="album-cover">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/8/8f/Taylor_Swift_-_Speak_Now_%28Taylor%27s_Version%29.png" alt="Speak Now" class="album-cover">
                     <div class="album-info">
-                        <div class="album-title">Speak Now (Taylor's Version)</div>
-                        <div class="album-year">2023</div>
+                        <div class="album-title">Speak Now</div>
+                        <div class="album-year">2010</div>
                     </div>
                 </div>
                 
-                <!-- Album 4 -->
+                <!-- Red -->
                 <div class="album-card" data-album="red">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/4/47/Taylor_Swift_-_Red_%28Taylor%27s_Version%29.png" alt="Red (Taylor's Version)" class="album-cover">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/4/47/Taylor_Swift_-_Red_%28Taylor%27s_Version%29.png" alt="Red" class="album-cover">
                     <div class="album-info">
-                        <div class="album-title">Red (Taylor's Version)</div>
-                        <div class="album-year">2021</div>
+                        <div class="album-title">Red</div>
+                        <div class="album-year">2012</div>
                     </div>
                 </div>
                 
-                <!-- Album 5 -->
+                <!-- 1989 -->
                 <div class="album-card" data-album="1989">
-                    <img src="https://upload.wikimedia.org/wikipedia/en/2/2e/Taylor_Swift_-_1989_%28Taylor%27s_Version%29.png" alt="1989 (Taylor's Version)" class="album-cover">
+                    <img src="https://upload.wikimedia.org/wikipedia/en/2/2e/Taylor_Swift_-_1989_%28Taylor%27s_Version%29.png" alt="1989" class="album-cover">
                     <div class="album-info">
-                        <div class="album-title">1989 (Taylor's Version)</div>
-                        <div class="album-year">2023</div>
+                        <div class="album-title">1989</div>
+                        <div class="album-year">2014</div>
                     </div>
                 </div>
                 
-                <!-- Album 6 -->
+                <!-- Reputation -->
                 <div class="album-card" data-album="reputation">
                     <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/Taylor_Swift_-_Reputation.png" alt="Reputation" class="album-cover">
                     <div class="album-info">
@@ -388,7 +361,7 @@
                     </div>
                 </div>
                 
-                <!-- Album 7 -->
+                <!-- Lover -->
                 <div class="album-card" data-album="lover">
                     <img src="https://upload.wikimedia.org/wikipedia/en/c/cd/Taylor_Swift_-_Lover.png" alt="Lover" class="album-cover">
                     <div class="album-info">
@@ -397,7 +370,7 @@
                     </div>
                 </div>
                 
-                <!-- Album 8 -->
+                <!-- Folklore -->
                 <div class="album-card" data-album="folklore">
                     <img src="https://upload.wikimedia.org/wikipedia/en/f/f8/Taylor_Swift_-_Folklore.png" alt="Folklore" class="album-cover">
                     <div class="album-info">
@@ -406,7 +379,7 @@
                     </div>
                 </div>
                 
-                <!-- Album 9 -->
+                <!-- Evermore -->
                 <div class="album-card" data-album="evermore">
                     <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Taylor_Swift_-_Evermore.png" alt="Evermore" class="album-cover">
                     <div class="album-info">
@@ -415,7 +388,7 @@
                     </div>
                 </div>
                 
-                <!-- Album 10 -->
+                <!-- Midnights -->
                 <div class="album-card" data-album="midnights">
                     <img src="https://upload.wikimedia.org/wikipedia/en/9/9f/Midnights_-_Taylor_Swift.png" alt="Midnights" class="album-cover">
                     <div class="album-info">
@@ -424,15 +397,42 @@
                     </div>
                 </div>
                 
-                <!-- Album 11 -->
+                <!-- The Tortured Poets Department -->
                 <div class="album-card" data-album="torturedpoets">
                     <img src="https://upload.wikimedia.org/wikipedia/en/4/4f/The_Tortured_Poets_Department_%28album%29.png" alt="The Tortured Poets Department" class="album-cover">
                     <div class="album-info">
-                        <div class="album-title">The Tortured Poets Department</div>
+                        <div class="album-title">Tortured Poets</div>
                         <div class="album-year">2024</div>
                     </div>
                 </div>
             </div>
+        </div>
+        
+        <div class="songs-container">
+            <div class="album-display">
+                <img src="https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png" alt="Taylor Swift" class="album-display-cover">
+                <div class="album-display-info">
+                    <h2>Taylor Swift</h2>
+                    <p>Album • 2006 • Country</p>
+                </div>
+                
+                <div class="featured-song">
+                    <div class="featured-song-title">Tim McGraw</div>
+                    <div>Chanson emblématique</div>
+                    <button class="featured-song-play">
+                        <i class="fas fa-play"></i> Écouter
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="player-container">
+        <img src="https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png" alt="Album Cover" class="player-album-cover">
+        
+        <div class="player-info">
+            <div class="player-song-title">Tim McGraw</div>
+            <div class="player-album-title">Taylor Swift</div>
         </div>
         
         <div class="player-controls">
@@ -462,373 +462,132 @@
     </div>
 
     <script>
-        // Données des albums et chansons
+        // Données des albums avec une chanson emblématique pour chacun
         const albumsData = {
             "taylorswift": {
                 title: "Taylor Swift",
                 year: "2006",
+                genre: "Country",
                 cover: "https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png",
-                duration: "53:28",
-                songs: [
-                    { number: 1, title: "Tim McGraw", duration: "3:52" },
-                    { number: 2, title: "Picture To Burn", duration: "2:53" },
-                    { number: 3, title: "Teardrops On My Guitar", duration: "3:35" },
-                    { number: 4, title: "Should've Said No", duration: "4:04" },
-                    { number: 5, title: "Our Song", duration: "3:24" },
-                    { number: 6, title: "A Place in This World", duration: "3:22" },
-                    { number: 7, title: "Cold as You", duration: "4:01" },
-                    { number: 8, title: "The Outside", duration: "3:29" },
-                    { number: 9, title: "Tied Together with a Smile", duration: "4:11" },
-                    { number: 10, title: "Stay Beautiful", duration: "3:58" },
-                    { number: 11, title: "Mary's Song (Oh My My My)", duration: "3:35" },
-                    { number: 12, title: "I'm Only Me When I'm with You", duration: "3:35" },
-                    { number: 13, title: "Invisible", duration: "3:23" },
-                    { number: 14, title: "A Perfectly Good Heart", duration: "3:42" }
-                ]
+                featuredSong: {
+                    title: "Tim McGraw",
+                    duration: "3:52",
+                    audioUrl: "#" // Remplacez par l'URL réelle du fichier audio
+                }
             },
             "fearless": {
-                title: "Fearless (Taylor's Version)",
-                year: "2021",
+                title: "Fearless",
+                year: "2008",
+                genre: "Country Pop",
                 cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
+                featuredSong: {
+                    title: "Love Story",
+                    duration: "3:55",
+                    audioUrl: "#"
+                }
             },
-        "speaknow": {
-                title: "Speak Now (Taylor's Version)",
-                year: "2023",
-                cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
+            "speaknow": {
+                title: "Speak Now",
+                year: "2010",
+                genre: "Country Pop",
+                cover: "https://upload.wikimedia.org/wikipedia/en/8/8f/Taylor_Swift_-_Speak_Now_%28Taylor%27s_Version%29.png",
+                featuredSong: {
+                    title: "Enchanted",
+                    duration: "5:53",
+                    audioUrl: "#"
+                }
             },
             "red": {
-                title: "Red (Taylor's Version)",
-                year: "2021",
-                cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
+                title: "Red",
+                year: "2012",
+                genre: "Pop",
+                cover: "https://upload.wikimedia.org/wikipedia/en/4/47/Taylor_Swift_-_Red_%28Taylor%27s_Version%29.png",
+                featuredSong: {
+                    title: "All Too Well (10 Minute Version)",
+                    duration: "10:13",
+                    audioUrl: "#"
+                }
             },
             "1989": {
-                title: "1989 (Taylor's Version)",
-                year: "2023",
-                cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
+                title: "1989",
+                year: "2014",
+                genre: "Synthpop",
+                cover: "https://upload.wikimedia.org/wikipedia/en/2/2e/Taylor_Swift_-_1989_%28Taylor%27s_Version%29.png",
+                featuredSong: {
+                    title: "Blank Space",
+                    duration: "3:51",
+                    audioUrl: "#"
+                }
             },
-            "rep": {
+            "reputation": {
                 title: "Reputation",
                 year: "2017",
-                cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
+                genre: "Electropop",
+                cover: "https://upload.wikimedia.org/wikipedia/en/f/f6/Taylor_Swift_-_Reputation.png",
+                featuredSong: {
+                    title: "Look What You Made Me Do",
+                    duration: "3:31",
+                    audioUrl: "#"
+                }
             },
             "lover": {
                 title: "Lover",
                 year: "2019",
-                cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
+                genre: "Pop",
+                cover: "https://upload.wikimedia.org/wikipedia/en/c/cd/Taylor_Swift_-_Lover.png",
+                featuredSong: {
+                    title: "Cruel Summer",
+                    duration: "2:58",
+                    audioUrl: "#"
+                }
             },
             "folklore": {
-                title: "folklore",
+                title: "Folklore",
                 year: "2020",
-                cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
+                genre: "Indie Folk",
+                cover: "https://upload.wikimedia.org/wikipedia/en/f/f8/Taylor_Swift_-_Folklore.png",
+                featuredSong: {
+                    title: "Cardigan",
+                    duration: "3:59",
+                    audioUrl: "#"
+                }
             },
             "evermore": {
-                title: "evermore",
+                title: "Evermore",
                 year: "2020",
-                cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
+                genre: "Indie Folk",
+                cover: "https://upload.wikimedia.org/wikipedia/en/0/0a/Taylor_Swift_-_Evermore.png",
+                featuredSong: {
+                    title: "Willow",
+                    duration: "3:34",
+                    audioUrl: "#"
+                }
             },
             "midnights": {
                 title: "Midnights",
                 year: "2022",
-                cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
+                genre: "Electropop",
+                cover: "https://upload.wikimedia.org/wikipedia/en/9/9f/Midnights_-_Taylor_Swift.png",
+                featuredSong: {
+                    title: "Anti-Hero",
+                    duration: "3:20",
+                    audioUrl: "#"
+                }
             },
-            "ttpd": {
+            "torturedpoets": {
                 title: "The Tortured Poets Department",
                 year: "2024",
-                cover: "https://upload.wikimedia.org/wikipedia/en/5/5b/Fearless_%28Taylor%27s_Version%29_%282021_album_cover%29_by_Taylor_Swift.png",
-                duration: "1:46:20",
-                songs: [
-                    { number: 1, title: "Fearless", duration: "4:01" },
-                    { number: 2, title: "Fifteen", duration: "4:54" },
-                    { number: 3, title: "Love Story", duration: "3:55" },
-                    { number: 4, title: "Hey Stephen", duration: "4:14" },
-                    { number: 5, title: "White Horse", duration: "3:54" },
-                    { number: 6, title: "You Belong With Me", duration: "3:51" },
-                    { number: 7, title: "Breathe", duration: "4:23" },
-                    { number: 8, title: "Tell Me Why", duration: "3:20" },
-                    { number: 9, title: "You're Not Sorry", duration: "4:21" },
-                    { number: 10, title: "The Way I Loved You", duration: "4:04" },
-                    { number: 11, title: "Forever & Always", duration: "3:45" },
-                    { number: 12, title: "The Best Day", duration: "4:05" },
-                    { number: 13, title: "Change", duration: "4:40" },
-                    { number: 14, title: "Jump Then Fall", duration: "3:57" },
-                    { number: 15, title: "Untouchable", duration: "5:12" },
-                    { number: 16, title: "Forever & Always (Piano Version)", duration: "4:27" },
-                    { number: 17, title: "Come In With The Rain", duration: "3:58" },
-                    { number: 18, title: "Superstar", duration: "4:23" },
-                    { number: 19, title: "The Other Side Of The Door", duration: "3:58" },
-                    { number: 20, title: "Today Was A Fairytale", duration: "4:01" },
-                    { number: 21, title: "You All Over Me", duration: "3:40" },
-                    { number: 22, title: "Mr. Perfectly Fine", duration: "4:37" },
-                    { number: 23, title: "We Were Happy", duration: "4:04" },
-                    { number: 24, title: "That's When", duration: "3:09" },
-                    { number: 25, title: "Don't You", duration: "3:28" },
-                    { number: 26, title: "Bye Bye Baby", duration: "4:02" }
-                ]
-            },
+                genre: "Pop",
+                cover: "https://upload.wikimedia.org/wikipedia/en/4/4f/The_Tortured_Poets_Department_%28album%29.png",
+                featuredSong: {
+                    title: "Fortnight (feat. Post Malone)",
+                    duration: "3:38",
+                    audioUrl: "#"
+                }
+            }
         };
 
-        // Script pour gérer la lecture des musiques
+        // Initialisation
         document.addEventListener('DOMContentLoaded', function() {
             const playPauseBtn = document.querySelector('.play-pause-btn');
             const progressBar = document.querySelector('.progress');
@@ -837,11 +596,14 @@
             const volumeSlider = document.querySelector('.volume-slider');
             const albumCards = document.querySelectorAll('.album-card');
             const songsContainer = document.querySelector('.songs-container');
+            const featuredSongPlayBtn = document.querySelector('.featured-song-play');
             
-            // Simuler un lecteur audio
-            let isPlaying = true;
+            // État du lecteur
+            let isPlaying = false;
             let currentTime = 0;
-            let duration = 232; // 3:52 en secondes
+            let duration = 232; // 3:52 en secondes (Tim McGraw)
+            let currentAlbum = 'taylorswift';
+            let currentSong = albumsData[currentAlbum].featuredSong;
             
             // Mettre à jour la barre de progression
             function updateProgress() {
@@ -849,7 +611,7 @@
                     currentTime += 1;
                     if (currentTime >= duration) {
                         currentTime = 0;
-                        playNextSong();
+                        pauseAudio();
                     }
                     
                     const progressPercent = (currentTime / duration) * 100;
@@ -862,117 +624,80 @@
                 }
             }
             
-            // Jouer la chanson suivante
-            function playNextSong() {
-                const currentSongItem = document.querySelector('.song-item.playing');
-                if (currentSongItem && currentSongItem.nextElementSibling) {
-                    playSong(currentSongItem.nextElementSibling);
+            // Jouer la chanson
+            function playAudio() {
+                isPlaying = true;
+                playPauseBtn.querySelector('i').className = 'fas fa-pause';
+                featuredSongPlayBtn.innerHTML = '<i class="fas fa-pause"></i> Lecture en cours';
+            }
+            
+            // Mettre en pause la chanson
+            function pauseAudio() {
+                isPlaying = false;
+                playPauseBtn.querySelector('i').className = 'fas fa-play';
+                featuredSongPlayBtn.innerHTML = '<i class="fas fa-play"></i> Écouter';
+            }
+            
+            // Basculer entre lecture et pause
+            function togglePlay() {
+                if (isPlaying) {
+                    pauseAudio();
+                } else {
+                    playAudio();
                 }
             }
             
-            // Jouer une chanson spécifique
-            function playSong(songItem) {
-                // Retirer la classe 'playing' de toutes les chansons
-                document.querySelectorAll('.song-item').forEach(item => {
-                    item.classList.remove('playing');
-                    item.querySelector('.play-btn i').className = 'fas fa-play';
-                });
+            // Charger un album
+            function loadAlbum(albumId) {
+                const album = albumsData[albumId];
+                if (!album) return;
                 
-                // Ajouter la classe 'playing' à la chanson sélectionnée
-                songItem.classList.add('playing');
-                songItem.querySelector('.play-btn i').className = 'fas fa-pause';
+                currentAlbum = albumId;
+                currentSong = album.featuredSong;
                 
-                // Mettre à jour le lecteur avec les infos de la chanson
-                const songTitle = songItem.querySelector('.song-title').textContent;
-                document.querySelector('.player-song-title').textContent = songTitle;
+                // Mettre à jour l'affichage de l'album
+                const albumDisplay = `
+                    <div class="album-display">
+                        <img src="${album.cover}" alt="${album.title}" class="album-display-cover">
+                        <div class="album-display-info">
+                            <h2>${album.title}</h2>
+                            <p>Album • ${album.year} • ${album.genre}</p>
+                        </div>
+                        
+                        <div class="featured-song">
+                            <div class="featured-song-title">${album.featuredSong.title}</div>
+                            <div>Chanson emblématique</div>
+                            <button class="featured-song-play">
+                                <i class="fas fa-play"></i> Écouter
+                            </button>
+                        </div>
+                    </div>
+                `;
                 
-                const albumTitle = document.querySelector('.album-header-info h2').textContent;
-                document.querySelector('.player-album-title').textContent = albumTitle;
+                songsContainer.innerHTML = albumDisplay;
+                
+                // Mettre à jour le lecteur
+                document.querySelector('.player-album-cover').src = album.cover;
+                document.querySelector('.player-song-title').textContent = album.featuredSong.title;
+                document.querySelector('.player-album-title').textContent = album.title;
+                
+                // Mettre à jour la durée
+                const [mins, secs] = album.featuredSong.duration.split(':').map(Number);
+                duration = mins * 60 + secs;
+                timeEls[1].textContent = album.featuredSong.duration;
                 
                 // Réinitialiser la progression
                 currentTime = 0;
                 progressBar.style.width = '0%';
                 timeEls[0].textContent = '0:00';
                 
-                // Mettre à jour la durée
-                const durationText = songItem.querySelector('.song-duration').textContent;
-                const [mins, secs] = durationText.split(':').map(Number);
-                duration = mins * 60 + secs;
-                timeEls[1].textContent = durationText;
-                
-                // Si le lecteur était en pause, le relancer
-                if (!isPlaying) {
+                // Réattacher les événements
+                document.querySelector('.featured-song-play').addEventListener('click', function() {
                     togglePlay();
-                }
-            }
-            
-            // Basculer entre lecture et pause
-            function togglePlay() {
-                isPlaying = !isPlaying;
-                if (isPlaying) {
-                    playPauseBtn.querySelector('i').className = 'fas fa-pause';
-                } else {
-                    playPauseBtn.querySelector('i').className = 'fas fa-play';
-                }
-            }
-            
-            // Charger les chansons d'un album
-            function loadAlbumSongs(albumId) {
-                const album = albumsData[albumId];
-                if (!album) return;
-                
-                // Mettre à jour l'en-tête de l'album
-                const albumHeader = `
-                    <div class="album-header">
-                        <img src="${album.cover}" alt="${album.title}" class="album-header-cover">
-                        <div class="album-header-info">
-                            <h2>${album.title}</h2>
-                            <p>${album.year} • ${album.songs.length} chansons • ${album.duration}</p>
-                        </div>
-                    </div>
-                `;
-                
-                // Générer la liste des chansons
-                const songListHTML = album.songs.map(song => `
-                    <div class="song-item" data-song="${song.title.toLowerCase().replace(/\s+/g, '')}">
-                        <div class="play-btn">
-                            <i class="fas fa-play"></i>
-                        </div>
-                        <div class="song-number">${song.number}</div>
-                        <div class="song-title">${song.title}</div>
-                        <div class="song-duration">${song.duration}</div>
-                    </div>
-                `).join('');
-                
-                songsContainer.innerHTML = albumHeader + '<div class="song-list">' + songListHTML + '</div>';
-                
-                // Mettre à jour la pochette dans le lecteur
-                document.querySelector('.player-album-cover').src = album.cover;
-                
-                // Réattacher les événements aux nouvelles chansons
-                document.querySelectorAll('.song-item').forEach(item => {
-                    item.addEventListener('click', function() {
-                        playSong(this);
-                    });
                 });
                 
-                document.querySelectorAll('.play-btn').forEach(button => {
-                    button.addEventListener('click', function(e) {
-                        e.stopPropagation();
-                        const songItem = this.closest('.song-item');
-                        if (songItem.classList.contains('playing')) {
-                            togglePlay();
-                        } else {
-                            playSong(songItem);
-                        }
-                    });
-                });
-                
-                // Jouer la première chanson automatiquement
-                const firstSong = document.querySelector('.song-item');
-                if (firstSong) {
-                    playSong(firstSong);
-                }
+                // Mettre en pause si une chanson était en cours
+                pauseAudio();
             }
             
             // Événements
@@ -981,7 +706,6 @@
             progressContainer.addEventListener('click', function(e) {
                 const width = this.clientWidth;
                 const clickX = e.offsetX;
-                const duration = 232; // 3:52 en secondes
                 currentTime = (clickX / width) * duration;
                 const progressPercent = (currentTime / duration) * 100;
                 progressBar.style.width = `${progressPercent}%`;
@@ -1003,27 +727,30 @@
                     // Ajouter la classe 'active' à la carte sélectionnée
                     this.classList.add('active');
                     
-                    // Charger les chansons de l'album sélectionné
+                    // Charger l'album sélectionné
                     const albumId = this.dataset.album;
-                    loadAlbumSongs(albumId);
+                    loadAlbum(albumId);
                 });
             });
             
             // Contrôles du lecteur
             document.querySelector('.control-btn .fa-step-backward').closest('.control-btn').addEventListener('click', function() {
-                const currentSongItem = document.querySelector('.song-item.playing');
-                if (currentSongItem && currentSongItem.previousElementSibling) {
-                    playSong(currentSongItem.previousElementSibling);
-                }
+                currentTime = 0;
+                progressBar.style.width = '0%';
+                timeEls[0].textContent = '0:00';
+                playAudio();
             });
             
-            document.querySelector('.control-btn .fa-step-forward').closest('.control-btn').addEventListener('click', playNextSong);
+            document.querySelector('.control-btn .fa-step-forward').closest('.control-btn').addEventListener('click', function() {
+                currentTime = duration - 1; // Pour déclencher le passage à la fin
+                updateProgress();
+            });
             
             // Mettre à jour la barre de progression toutes les secondes
             setInterval(updateProgress, 1000);
             
-            // Charger les chansons du premier album par défaut
-            loadAlbumSongs('taylorswift');
+            // Charger le premier album par défaut
+            loadAlbum('taylorswift');
         });
     </script>
 </body>
