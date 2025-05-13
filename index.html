@@ -112,7 +112,7 @@
 
         /* Effet de trombone */
         .polaroid::after {
-            content: '';
+            content: "";
             position: absolute;
             top: 10px;
             right: 20px;
@@ -290,10 +290,20 @@
     <div class="polaroid-gallery">
         <!-- Album 1 : Taylor Swift (2006) -->
         <div class="polaroid" onclick="openAlbumModal('Taylor Swift', '2006', 'Country', 'Taylor Swift.jpg', [
-            {title: 'Tim McGraw', duration: '3:52', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3'},
-            {title: 'Picture to Burn', duration: '2:53', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3'},
-            {title: 'Teardrops on My Guitar', duration: '3:35', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3'},
-            {title: 'A Place in This World', duration: '3:22', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3'}
+            {title: "Tim McGraw", duration: "3:52", audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"},
+            {title: "Picture to Burn", duration: "2:53", audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-2.mp3"},
+            {title: "Teardrops on My Guitar", duration: "3:35", audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3"},
+            {title: "A Place in This World", duration: "3:22", audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3"},
+            {title: "Cold As You", duration: "", audio: "Cold As You.mp3"},
+            {title: "The Outside", duration: "", audio: "The Outside.mp3"},
+            {title: "Tied Together With A Smile", duration: "", audio: "Tied Together with a Smile.mp3"},
+            {title: "Stay Beautiful", duration: "", audio: "Stay Beautiful.mp3"},
+            {title: "Should've Said No", duration: "", audio: "Should_ve Said No.mp3"},
+            {title: "Mary's Song", duration: "", audio: "Mary_s Song (Oh My My My).mp3"},
+            {title: "Our Song", duration: "", audio: "Our Song.mp3"},
+            {title: "I'm Only Me When I'm With You", duration: "", audio: "I’m Only Me When I’m With You.mp3"},
+            {title: "Invisible", duration: "", audio: "Invisible.mp3"},
+            {title: "A Perfectly Good Heart", duration: "", audio: "A Perfectly Good Heart.mp3"}
         ])">
             <img src="Taylor Swift.jpg" alt="Taylor Swift Album">
             <p class="polaroid-caption">Taylor Swift</p>
@@ -305,10 +315,30 @@
 
         <!-- Album 2 : Fearless (2008) -->
         <div class="polaroid" onclick="openAlbumModal('Fearless', '2008', 'Country Pop', 'fearless.jpg', [
-            {title: 'Fearless', duration: '4:01', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-5.mp3'},
-            {title: 'Fifteen', duration: '4:54', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-6.mp3'},
-            {title: 'Love Story', duration: '3:55', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-7.mp3'},
-            {title: 'White Horse', duration: '3:54', audio: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3'}
+            {title: "Fearless", duration: "4:01", audio: "Fearless (Taylor's Version).mp3"},
+            {title: "Fifteen", duration: "4:54", audio: "Fifteen (Taylor's Version).mp3"},
+            {title: "Love Story", duration: "3:55", audio: "Love Story (Taylors Version).mp3"},
+            {title: "White Horse", duration: "3:54", audio: "Hey Stephen (Taylor's Version).mp3"},
+            {title: "You Belong With Me", duration: "", audio: "You Belong With Me (Taylor's Version).mp3"},
+            {title: "Breathe ft. Colbie Caillat", duration: "", audio: "Breathe (Taylor's Version) ft. Colbie Caillat.mp3"},
+            {title: "Tell Me Why", duration: "", audio: "Tell Me Why (Taylor's Version).mp3"},
+            {title: "You're Not Sorry", duration: "", audio: "You're Not Sorry (Taylor's Version).mp3"},
+            {title: "The Way I Loved You", duration: "", audio: "The Way I Loved You (Taylor's Version).mp3"},
+            {title: "Forever & Always", duration: "", audio: "Forever & Always (Taylor's Version).mp3"},
+            {title: "The Best Day", duration: "", audio: "The Best Day (Taylor's Version).mp3"},
+            {title: "Change", duration: "", audio: "Change (Taylor's Version).mp3"},
+            {title: "Jump then fall", duration: "", audio: "Jump Then Fall (Taylor's Version).mp3"},
+            {title: "Untouchable", duration: "", audio: "Untouchable (Taylor's Version).mp3"},
+            {title: "Come in with the rain", duration: "", audio: "Come In With The Rain (Taylor's Version).mp3"},
+            {title: "Superstar", duration: "", audio: "Superstar (Taylor's Version).mp3"},
+            {title: "The other side of the door", duration: "", audio: "The Other Side Of The Door (Taylors Version).mp3"},
+            {title: "Today was a fairytale", duration: "", audio: "Today Was A Fairytale (Taylor's Version).mp3"},
+            {title: "You All Over Me ft. Maren Morris (From The Vault)", duration: "", audio: "You All Over Me ft. Maren Morris (Taylor's Version) (From The Vault).mp3"},
+            {title: "Mr. Perfectly Fine (From The Vault)", duration: "", audio: "Mr. Perfectly Fine (Taylors Version) (From The Vault).mp3"},
+            {title: "We Were Happy (From The Vault)", duration: "", audio: "We Were Happy (Taylors Version) (From The Vault).mp3"},
+            {title: "That's When ft. Keith Urban (From The Vault)", duration: "", audio: "Thats When (Taylors Version) (From The Vault).mp3"},
+            {title: "Don't You (From The Vault)", duration: "", audio: "Dont You (Taylors Version) (From The Vault).mp3"},
+            {title: "Bye Bye Baby (From The Vault)", duration: "", audio: "Bye Bye Baby (Taylors Version) (From The Vault).mp3"}
         ])">
             <img src="fearless.jpg" alt="Fearless Album">
             <p class="polaroid-caption">Fearless</p>
@@ -503,7 +533,7 @@
             modalCover.src = cover;
             
             // Vider la liste des pistes
-            trackList.innerHTML = '';
+            trackList.innerHTML = "";
             
             // Ajouter chaque piste à la liste
             tracks.forEach((track, index) => {
@@ -595,7 +625,7 @@
             const audioPlayer = document.getElementById('audioPlayer');
             if (audioPlayer) {
                 audioPlayer.pause();
-                audioPlayer.src = '';
+                audioPlayer.src = "";
             }
             
             // Réinitialiser les icônes de lecture
