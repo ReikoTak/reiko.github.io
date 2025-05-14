@@ -666,8 +666,10 @@
     </footer>
 
     <script>
-        // Variables globales
+                // Variables globales
         let currentPlayingTrack = null;
+        let currentAlbumTracks = null; // Ajout: Stocke les pistes de l'album courant
+        let currentAlbumIndex = 0;    // Ajout: Index de la piste en cours
 
         // Fonction pour ouvrir la modal de l'album
         function openAlbumModal(title, year, genre, cover, tracks) {
@@ -691,15 +693,20 @@
             tracks.forEach((track, index) => {
                 const trackItem = document.createElement('li');
                 trackItem.className = 'track-item';
+                trackItem.dataset.trackIndex = index; // Ajout: Stocke l'index de la piste
                 trackItem.innerHTML = `
                     <span class="track-number">${index + 1}</span>
                     <span class="track-title">${track.title}</span>
-                    <button class="play-track-btn" onclick="playTrack('${track.audio}', this, event)">
+                    <button class="play-track-btn" onclick="playTrack('${track.audio}', this, event, ${index})">
                         <i class="fas fa-play"></i>
                     </button>
                 `;
                 trackList.appendChild(trackItem);
             });
+            
+            // Sauvegarder les pistes pour la lecture en continu
+            currentAlbumTracks = tracks;
+            currentAlbumIndex = 0;
             
             // Afficher la modal
             modal.style.display = 'flex';
@@ -708,10 +715,100 @@
             stopCurrentTrack();
         }
 
-        // Fonction pour fermer la modal
+        // Fonction pour jouer la piste suivante automatiquement
+        function playNextTrack() {
+            if (!currentAlbumTracks || currentAlbumIndex === null) return;
+            
+            currentAlbumIndex++;
+            
+            // Si on arrive à la fin de l'album, on peut choisir de:
+            // 1. S'arrêter (décommenter la ligne suivante)
+            // if (currentAlbumIndex >= currentAlbumTracks.length) return;
+            
+            // 2. Boucler (décommenter la ligne suivante)
+            if (currentAlbumIndex >= currentAlbumTracks.length) currentAlbumIndex = 0;
+            
+            const nextTrack = currentAlbumTracks[currentAlbumIndex];
+            const nextButton = document.querySelector(`.track-item[data-track-index="${currentAlbumIndex}"] .play-track-btn`);
+            
+            if (nextTrack && nextButton) {
+                playTrack(nextTrack.audio, nextButton, new Event('click'), currentAlbumIndex);
+            }
+        }
+
+        // Fonction pour jouer une piste (modifiée pour gérer l'enchaînement)
+        function playTrack(audioSrc, button, event, trackIndex = null) {
+            event.preventDefault();
+            event.stopPropagation();
+            
+            const audioPlayer = document.getElementById('audioPlayer');
+            const icon = button ? button.querySelector('i') : null;
+            
+            // Mettre à jour l'index si fourni
+            if (trackIndex !== null) {
+                currentAlbumIndex = trackIndex;
+            }
+            
+            // Si c'est la même piste qui est déjà en cours de lecture
+            if (currentPlayingTrack === audioSrc) {
+                if (audioPlayer.paused) {
+                    audioPlayer.play();
+                    if (icon) icon.className = 'fas fa-pause';
+                } else {
+                    audioPlayer.pause();
+                    if (icon) icon.className = 'fas fa-play';
+                }
+                return;
+            }
+            
+            // Arrêter la piste en cours
+            stopCurrentTrack();
+            
+            // Jouer la nouvelle piste
+            currentPlayingTrack = audioSrc;
+            audioPlayer.src = audioSrc;
+            audioPlayer.play();
+            
+            // Changer l'icône en pause
+            if (icon) icon.className = 'fas fa-pause';
+            
+            // Mettre à jour le style de l'élément en cours de lecture
+            const trackItems = document.querySelectorAll('.track-item');
+            trackItems.forEach(item => {
+                item.classList.remove('now-playing');
+                const itemIndex = parseInt(item.dataset.trackIndex);
+                if (trackIndex !== null && itemIndex === trackIndex) {
+                    item.classList.add('now-playing');
+                } else if (button && item.contains(button)) {
+                    item.classList.add('now-playing');
+                }
+            });
+            
+            // Gestion des erreurs audio
+            audioPlayer.onerror = function() {
+                console.error("Erreur de lecture audio");
+                if (icon) icon.className = 'fas fa-play';
+                currentPlayingTrack = null;
+                playNextTrack(); // Passer à la piste suivante en cas d'erreur
+            };
+            
+            // Quand la musique se termine
+            audioPlayer.onended = function() {
+                if (icon) icon.className = 'fas fa-play';
+                currentPlayingTrack = null;
+                document.querySelectorAll('.track-item').forEach(item => {
+                    item.classList.remove('now-playing');
+                });
+                playNextTrack(); // Lancer automatiquement la piste suivante
+            };
+        }
+
+        // Fonction pour fermer la modal (modifiée)
         function closeModal() {
             document.getElementById('albumModal').style.display = 'none';
             stopCurrentTrack();
+            currentAlbumTracks = null; // Réinitialiser
+            currentAlbumIndex = 0;    // Réinitialiser
         }
 
         // Fonction pour jouer une piste
