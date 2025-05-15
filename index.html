@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -769,9 +770,9 @@
 
     <footer>
         <div class="social-links">
-            <a href="https://www.instagram.com/taylorswift/"><i class="fab fa-instagram"></i></a>
-            <a href="https://x.com/TaylorSwift/"><i class="fab fa-twitter"></i></a>
-            <a href="https://open.spotify.com/intl-fr/artist/06HL4z0CvFAxyc27GXpf02"><i class="fab fa-spotify"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-spotify"></i></a>
         </div>
         <p>© 2024 Taylor Swift - Tous droits réservés</p>
     </footer>
@@ -785,21 +786,12 @@
         let isShuffleOn = false;
         let originalTrackOrder = [];
         let isPlaying = false;
-        let allTracks = []; // Stocke toutes les musiques de tous les albums
-        let shuffledAllTracks = []; // Version mélangée de toutes les musiques
-        let currentTrackInShuffle = null; // Suivi de la piste en cours en mode shuffle
 
         // Audio element
         const globalAudioPlayer = document.getElementById('globalAudioPlayer');
         const globalAudioControls = document.getElementById('globalAudioControls');
 
-        // Au chargement de la page, collecter toutes les musiques
-        document.addEventListener('DOMContentLoaded', function() {
-            // Cette fonction serait appelée pour chaque album quand on clique dessus
-            // Mais pour simplifier, nous allons créer une fonction qui collecte toutes les pistes
-        });
-
-        // Fonction modifiée pour ouvrir la modal de l'album
+        // Fonction pour ouvrir la modal de l'album
         function openAlbumModal(title, year, genre, cover, tracks) {
             const modal = document.getElementById('albumModal');
             const modalTitle = document.getElementById('modalAlbumTitle');
@@ -828,21 +820,11 @@
                 trackItem.innerHTML = `
                     <span class="track-number">${index + 1}</span>
                     <span class="track-title">${track.title}</span>
-                    <button class="play-track-btn" onclick="playTrack('${track.audio}', this, event, ${index}, '${cover}', '${title}', '${track.title}')">
+                    <button class="play-track-btn" onclick="playTrack('${track.audio}', this, event, ${index}, '${cover}', '${title}')">
                         <i class="fas fa-play"></i>
                     </button>
                 `;
                 trackList.appendChild(trackItem);
-                
-                // Ajouter la piste à la collection globale avec les infos de l'album
-                allTracks.push({
-                    audio: track.audio,
-                    title: track.title,
-                    albumTitle: title,
-                    albumCover: cover,
-                    albumYear: year,
-                    albumGenre: genre
-                });
             });
             
             // Sauvegarder les pistes pour la lecture en continu
@@ -854,25 +836,15 @@
             modal.style.display = 'flex';
         }
 
-        // Fonction pour jouer une piste (modifiée pour gérer le mode shuffle global)
-        function playTrack(audioSrc, button, event, trackIndex, cover, albumTitle, trackTitle) {
+        // Fonction pour jouer une piste
+        function playTrack(audioSrc, button, event, trackIndex, cover, albumTitle) {
             event.preventDefault();
             event.stopPropagation();
             
             const icon = button ? button.querySelector('i') : null;
             
-            // Si on est en mode shuffle global, désactiver le suivi par album
-            if (isShuffleOn) {
-                currentTrackInShuffle = {
-                    audio: audioSrc,
-                    title: trackTitle,
-                    albumTitle: albumTitle,
-                    albumCover: cover
-                };
-            } else {
-                // Mode normal (par album)
-                currentAlbumIndex = trackIndex;
-            }
+            // Mettre à jour l'index
+            currentAlbumIndex = trackIndex;
             
             // Si c'est la même piste qui est déjà en cours de lecture
             if (currentPlayingTrack === audioSrc) {
@@ -897,16 +869,14 @@
             isPlaying = true;
             
             // Mettre à jour les informations dans les contrôles globaux
-            updateGlobalControls(trackTitle, albumTitle, cover);
+            updateGlobalControls(currentAlbumTracks[trackIndex].title, albumTitle, cover);
             
             // Changer l'icône en pause
             if (icon) icon.className = 'fas fa-pause';
             document.getElementById('globalPlayPauseIcon').className = 'fas fa-pause';
             
             // Mettre à jour le style de l'élément en cours de lecture
-            if (!isShuffleOn) {
-                updateNowPlayingStyle(trackIndex);
-            }
+            updateNowPlayingStyle(trackIndex);
             
             // Gestion des erreurs audio
             globalAudioPlayer.onerror = function() {
@@ -927,124 +897,91 @@
             };
         }
 
-        // Fonction pour jouer la piste suivante (modifiée pour gérer le shuffle global)
+        // Fonction pour mettre à jour les contrôles globaux
+        function updateGlobalControls(trackTitle, albumTitle, cover) {
+            document.getElementById('currentTrackTitle').textContent = trackTitle;
+            document.getElementById('currentTrackAlbum').textContent = albumTitle;
+            document.getElementById('currentTrackCover').src = cover;
+            globalAudioControls.style.display = 'flex';
+        }
+
+        // Fonction pour mettre à jour le style de l'élément en cours de lecture
+        function updateNowPlayingStyle(trackIndex) {
+            const trackItems = document.querySelectorAll('.track-item');
+            trackItems.forEach(item => {
+                item.classList.remove('now-playing');
+                const itemIndex = parseInt(item.dataset.trackIndex);
+                if (itemIndex === trackIndex) {
+                    item.classList.add('now-playing');
+                }
+            });
+        }
+
+        // Fonction pour jouer la piste suivante
         function playNextTrack() {
-            if (isShuffleOn) {
-                playRandomTrack();
-            } else {
-                if (currentAlbumTracks.length === 0) return;
-                
-                currentAlbumIndex++;
-                
-                if (currentAlbumIndex >= currentAlbumTracks.length) {
-                    currentAlbumIndex = 0; // Boucler à la première piste
-                }
-                
-                const nextTrack = currentAlbumTracks[currentAlbumIndex];
-                const nextButton = document.querySelector(`.track-item[data-track-index="${currentAlbumIndex}"] .play-track-btn`);
-                
-                if (nextTrack) {
-                    playTrack(nextTrack.audio, nextButton, new Event('click'), currentAlbumIndex, 
-                            currentAlbumInfo.cover, currentAlbumInfo.title, nextTrack.title);
-                }
+            if (currentAlbumTracks.length === 0) return;
+            
+            currentAlbumIndex++;
+            
+            if (currentAlbumIndex >= currentAlbumTracks.length) {
+                currentAlbumIndex = 0; // Boucler à la première piste
+            }
+            
+            const nextTrack = currentAlbumTracks[currentAlbumIndex];
+            const nextButton = document.querySelector(`.track-item[data-track-index="${currentAlbumIndex}"] .play-track-btn`);
+            
+            if (nextTrack) {
+                playTrack(nextTrack.audio, nextButton, new Event('click'), currentAlbumIndex, 
+                        currentAlbumInfo.cover, currentAlbumInfo.title);
             }
         }
 
-        // Fonction pour jouer une piste aléatoire parmi toutes les musiques
-        function playRandomTrack() {
-            if (allTracks.length === 0) return;
-            
-            // Si c'est la première lecture aléatoire ou si nous avons épuisé la liste mélangée
-            if (shuffledAllTracks.length === 0 || !currentTrackInShuffle) {
-                shuffledAllTracks = [...allTracks];
-                // Mélanger le tableau
-                for (let i = shuffledAllTracks.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffledAllTracks[i], shuffledAllTracks[j]] = [shuffledAllTracks[j], shuffledAllTracks[i]];
-                }
-            }
-            
-            // Trouver l'index de la piste actuelle dans la liste mélangée
-            let currentIndex = 0;
-            if (currentTrackInShuffle) {
-                currentIndex = shuffledAllTracks.findIndex(track => 
-                    track.audio === currentTrackInShuffle.audio);
-            }
-            
-            // Passer à la piste suivante dans la liste mélangée
-            let nextIndex = currentIndex + 1;
-            if (nextIndex >= shuffledAllTracks.length) {
-                nextIndex = 0; // Revenir au début si on arrive à la fin
-            }
-            
-            const nextTrack = shuffledAllTracks[nextIndex];
-            currentTrackInShuffle = nextTrack;
-            
-            // Jouer la piste (sans bouton car c'est une lecture automatique)
-            playTrack(nextTrack.audio, null, new Event('click'), 0, 
-                    nextTrack.albumCover, nextTrack.albumTitle, nextTrack.title);
-        }
-
-        // Fonction pour jouer la piste précédente (modifiée pour gérer le shuffle global)
+        // Fonction pour jouer la piste précédente
         function playPreviousTrack() {
-            if (isShuffleOn) {
-                if (!currentTrackInShuffle || shuffledAllTracks.length === 0) return;
-                
-                // Trouver l'index de la piste actuelle dans la liste mélangée
-                const currentIndex = shuffledAllTracks.findIndex(track => 
-                    track.audio === currentTrackInShuffle.audio);
-                
-                // Passer à la piste précédente dans la liste mélangée
-                let prevIndex = currentIndex - 1;
-                if (prevIndex < 0) {
-                    prevIndex = shuffledAllTracks.length - 1; // Aller à la fin si on est au début
-                }
-                
-                const prevTrack = shuffledAllTracks[prevIndex];
-                currentTrackInShuffle = prevTrack;
-                
-                // Jouer la piste
-                playTrack(prevTrack.audio, null, new Event('click'), 0, 
-                        prevTrack.albumCover, prevTrack.albumTitle, prevTrack.title);
-            } else {
-                if (currentAlbumTracks.length === 0) return;
-                
-                currentAlbumIndex--;
-                
-                if (currentAlbumIndex < 0) {
-                    currentAlbumIndex = currentAlbumTracks.length - 1; // Boucler à la dernière piste
-                }
-                
-                const prevTrack = currentAlbumTracks[currentAlbumIndex];
-                const prevButton = document.querySelector(`.track-item[data-track-index="${currentAlbumIndex}"] .play-track-btn`);
-                
-                if (prevTrack) {
-                    playTrack(prevTrack.audio, prevButton, new Event('click'), currentAlbumIndex, 
-                            currentAlbumInfo.cover, currentAlbumInfo.title, prevTrack.title);
-                }
+            if (currentAlbumTracks.length === 0) return;
+            
+            currentAlbumIndex--;
+            
+            if (currentAlbumIndex < 0) {
+                currentAlbumIndex = currentAlbumTracks.length - 1; // Boucler à la dernière piste
+            }
+            
+            const prevTrack = currentAlbumTracks[currentAlbumIndex];
+            const prevButton = document.querySelector(`.track-item[data-track-index="${currentAlbumIndex}"] .play-track-btn`);
+            
+            if (prevTrack) {
+                playTrack(prevTrack.audio, prevButton, new Event('click'), currentAlbumIndex, 
+                        currentAlbumInfo.cover, currentAlbumInfo.title);
             }
         }
 
-        // Fonction pour activer/désactiver le mode aléatoire global
+        // Fonction pour basculer entre lecture et pause
+        function togglePlayPause() {
+            if (globalAudioPlayer.paused) {
+                globalAudioPlayer.play();
+                document.getElementById('globalPlayPauseIcon').className = 'fas fa-pause';
+                isPlaying = true;
+            } else {
+                globalAudioPlayer.pause();
+                document.getElementById('globalPlayPauseIcon').className = 'fas fa-play';
+                isPlaying = false;
+            }
+        }
+
+        // Fonction pour activer/désactiver le mode aléatoire
         function toggleShuffle() {
             isShuffleOn = !isShuffleOn;
             const shuffleIcon = document.getElementById('shuffleIcon');
             
             if (isShuffleOn) {
                 shuffleIcon.style.color = '#ff6b81';
-                // Préparer la liste mélangée
-                shuffledAllTracks = [...allTracks];
-                for (let i = shuffledAllTracks.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [shuffledAllTracks[i], shuffledAllTracks[j]] = [shuffledAllTracks[j], shuffledAllTracks[i]];
-                }
+                shuffleTracks();
             } else {
                 shuffleIcon.style.color = '';
-                shuffledAllTracks = [];
-                currentTrackInShuffle = null;
+                // Restaurer l'ordre original
+                currentAlbumTracks = [...originalTrackOrder];
             }
         }
-
 
         // Fonction pour mélanger les pistes
         function shuffleTracks() {
