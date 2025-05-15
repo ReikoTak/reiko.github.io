@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taylor Swift</title>
+    <title>Taylor Swift - Music Gallery</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Style général */
@@ -163,7 +163,7 @@
             padding: 2rem;
             border-radius: 10px;
             width: 90%;
-            max-width: 600px;
+            max-width: 800px;
             max-height: 80vh;
             overflow-y: auto;
             position: relative;
@@ -257,6 +257,29 @@
         .now-playing {
             background-color: #fff5f5;
             font-weight: bold;
+        }
+
+        /* Lecteur YouTube */
+        .youtube-player {
+            width: 100%;
+            margin-top: 1rem;
+            display: none;
+        }
+
+        .youtube-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            overflow: hidden;
+            margin-top: 1rem;
+        }
+
+        .youtube-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
 
         /* Lecteur audio */
@@ -368,23 +391,12 @@
 
     <div class="polaroid-gallery">
         <!-- Album 1 : Taylor Swift (2006) -->
-        <div class="polaroid" onclick="openAlbumModal('Taylor Swift', '2006', 'Country', 'Taylor Swift.png', [
-            {title: 'Tim McGraw', audio: 'Tim McGraw.mp3'},
-            {title: 'Picture to Burn', audio: 'Picture To Burn.mp3'},
-            {title: 'Teardrops on My Guitar', audio: 'Teardrops On My Guitar.mp3'},
-            {title: 'A Place in This World', audio: 'A Place in this World.mp3'},
-            {title: 'Cold As You', audio: 'Cold As You.mp3'},
-            {title: 'The Outside', audio: 'The Outside.mp3'},
-            {title: 'Tied Together With A Smile', audio: 'Tied Together with a Smile.mp3'},
-            {title: 'Stay Beautiful', audio: 'Stay Beautiful.mp3'},
-            {title: 'Should\'ve Said No', audio: 'Should_ve Said No.mp3'},
-            {title: 'Mary\'s Song', audio: 'Mary_s Song (Oh My My My).mp3'},
-            {title: 'Our Song', audio: 'Our Song.mp3'},
-            {title: 'I\'m Only Me When I\'m With You', audio: 'I’m Only Me When I’m With You.mp3'},
-            {title: 'Invisible', audio: 'Invisible.mp3'},
-            {title: 'A Perfectly Good Heart', audio: 'A Perfectly Good Heart.mp3'}
+        <div class="polaroid" onclick="openAlbumModal('Taylor Swift', '2006', 'Country', 'https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png', [
+            {title: 'Tim McGraw', youtubeId: 'GkD20ajVxnY'},
+            {title: 'Teardrops on My Guitar', youtubeId: 'xKCek6_dB0M'},
+            {title: 'Our Song', youtubeId: 'VuNIsY6JdUw'}
         ])">
-            <img src="Taylor Swift.png" alt="Taylor Swift Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/1/1f/Taylor_Swift_-_Taylor_Swift.png" alt="Taylor Swift Album">
             <p class="polaroid-caption">Taylor Swift</p>
             <p class="polaroid-year">2006 • Country</p>
             <button class="play-btn">
@@ -393,33 +405,12 @@
         </div>
 
         <!-- Album 2 : Fearless (2008) -->
-        <div class="polaroid" onclick="openAlbumModal('Fearless', '2008', 'Country Pop', 'fearless.jpg', [
-            {title: 'Fearless', audio: 'Fearless (Taylor\'s Version).mp3'},
-            {title: 'Fifteen', audio: 'Fifteen (Taylor\'s Version).mp3'},
-            {title: 'Love Story', audio: 'Love Story (Taylors Version).mp3'},
-            {title: 'White Horse', audio: 'Hey Stephen (Taylor\'s Version).mp3'},
-            {title: 'You Belong With Me', audio: 'You Belong With Me (Taylor\'s Version).mp3'},
-            {title: 'Breathe ft. Colbie Caillat', audio: 'Breathe (Taylor\'s Version) ft. Colbie Caillat.mp3'},
-            {title: 'Tell Me Why', audio: 'Tell Me Why (Taylor\'s Version).mp3'},
-            {title: 'You\'re Not Sorry', audio: 'You\'re Not Sorry (Taylor\'s Version).mp3'},
-            {title: 'The Way I Loved You', audio: 'The Way I Loved You (Taylor\'s Version).mp3'},
-            {title: 'Forever & Always', audio: 'Forever & Always (Taylor\'s Version).mp3'},
-            {title: 'The Best Day', audio: 'The Best Day (Taylor\'s Version).mp3'},
-            {title: 'Change', audio: 'Change (Taylor\'s Version).mp3'},
-            {title: 'Jump then fall', audio: 'Jump Then Fall (Taylor\'s Version).mp3'},
-            {title: 'Untouchable', audio: 'Untouchable (Taylor\'s Version).mp3'},
-            {title: 'Come in with the rain', audio: 'Come In With The Rain (Taylor\'s Version).mp3'},
-            {title: 'Superstar', audio: 'Superstar (Taylor\'s Version).mp3'},
-            {title: 'The other side of the door', audio: 'The Other Side Of The Door (Taylors Version).mp3'},
-            {title: 'Today was a fairytale', audio: 'Today Was A Fairytale (Taylor\'s Version).mp3'},
-            {title: 'You All Over Me ft. Maren Morris (From The Vault)', audio: 'You All Over Me ft. Maren Morris (Taylor\'s Version) (From The Vault).mp3'},
-            {title: 'Mr. Perfectly Fine (From The Vault)', audio: 'Mr. Perfectly Fine (Taylors Version) (From The Vault).mp3'},
-            {title: 'We Were Happy (From The Vault)', audio: 'We Were Happy (Taylors Version) (From The Vault).mp3'},
-            {title: 'That\'s When ft. Keith Urban (From The Vault)', audio: 'Thats When (Taylors Version) (From The Vault).mp3'},
-            {title: 'Don\'t You (From The Vault)', audio: 'Dont You (Taylors Version) (From The Vault).mp3'},
-            {title: 'Bye Bye Baby (From The Vault)', audio: 'Bye Bye Baby (Taylors Version) (From The Vault).mp3'}
+        <div class="polaroid" onclick="openAlbumModal('Fearless', '2008', 'Country Pop', 'https://upload.wikimedia.org/wikipedia/en/8/86/Taylor_Swift_-_Fearless.png', [
+            {title: 'Love Story', youtubeId: 'HgzGwKwLmgM'},
+            {title: 'You Belong With Me', youtubeId: 'VuNIsY6JdUw'},
+            {title: 'Fifteen', youtubeId: '7vG0gvTEqOw'}
         ])">
-            <img src="fearless.jpg" alt="Fearless Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/8/86/Taylor_Swift_-_Fearless.png" alt="Fearless Album">
             <p class="polaroid-caption">Fearless</p>
             <p class="polaroid-year">2008 • Country Pop</p>
             <button class="play-btn">
@@ -428,32 +419,12 @@
         </div>
 
         <!-- Album 3 : Speak Now (2010) -->
-        <div class="polaroid" onclick="openAlbumModal('Speak Now', '2010', 'Pop Rock', 'Speak Now.jpg', [
-            {title: 'Mine', audio: 'Mine.mp3'},
-            {title: 'Sparks Fly', audio: 'Sparks Fly.mp3'},
-            {title: 'Back to December', audio: 'Back To December.mp3'},
-            {title: 'Speak Now', audio: 'Speak Now.mp3'},
-            {title: 'Dear John', audio: 'Dear John.mp3'},
-            {title: 'Mean', audio: 'Mean.mp3'},
-            {title: 'The Story Of Us', audio: 'The Story Of Us.mp3'},
-            {title: 'Never Grow Up', audio: 'Never Grow Up.mp3'},
-            {title: 'Enchanted', audio: 'Enchanted.mp3'},
-            {title: 'Better Than Revenge', audio: 'Better Than Revenge.mp3'},
-            {title: 'Innocent', audio: 'Innocent.mp3'},
-            {title: 'Haunted', audio: 'Haunted.mp3'},
-            {title: 'Last Kiss', audio: 'Last Kiss.mp3'},
-            {title: 'Long Live', audio: 'Long Live.mp3'},
-            {title: 'Ours', audio: 'Ours.mp3'},
-            {title: 'If This Was A Movie', audio: 'If This Was A Movie.mp3'},
-            {title: 'Superman', audio: 'Superman.mp3'},
-            {title: 'Electric Touch', audio: 'Electric Touch.mp3'},
-            {title: 'When Emma Falls In Love (From The Vault)', audio: 'When Emma Falls in Love.mp3'},
-            {title: 'I Can See You (From The Vault)', audio: 'I Can See You.mp3'},
-            {title: 'Castles Crumbling ft. Hayley Williams (From The Vault)', audio: 'Castles Crumbling.mp3'},
-            {title: 'Foolish One (From The Vault)', audio: 'Foolish One.mp3'},
-            {title: 'Timeless (From The Vault)', audio: 'Timeless.mp3'}
+        <div class="polaroid" onclick="openAlbumModal('Speak Now', '2010', 'Pop Rock', 'https://upload.wikimedia.org/wikipedia/en/8/8f/Taylor_Swift_-_Speak_Now_cover.png', [
+            {title: 'Mine', youtubeId: 'XPBwXKgDTdE'},
+            {title: 'Back to December', youtubeId: 'Qi5w5yaVg5M'},
+            {title: 'Mean', youtubeId: 'jYa1eI1hpDE'}
         ])">
-            <img src="Speak Now.jpg" alt="Speak Now Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/8/8f/Taylor_Swift_-_Speak_Now_cover.png" alt="Speak Now Album">
             <p class="polaroid-caption">Speak Now</p>
             <p class="polaroid-year">2010 • Pop Rock</p>
             <button class="play-btn">
@@ -462,37 +433,12 @@
         </div>
 
         <!-- Album 4 : Red (2012) -->
-        <div class="polaroid" onclick="openAlbumModal('Red', '2012', 'Pop', 'https://upload.wikimedia.org/wikipedia/en/4/47/Taylor_Swift_-_Red_%28Taylor%27s_Version%29.png', [
-            {title: 'State of Grace', audio: 'State Of Grace.mp3'},
-            {title: 'Red', audio: 'Red.mp3'},
-            {title: 'Treacherous', audio: 'Treacherous.mp3'},
-            {title: 'I Knew You Were Trouble', audio: 'I Knew You Were Trouble.mp3'},
-            {title: 'All Too Well', audio: 'All Too Well.mp3'},
-            {title: '22', audio: '22.mp3'},
-            {title: 'I Almost Do', audio: 'I Almost Do.mp3'},
-            {title: 'We Are Never Ever Getting Back Together', audio: 'We Are Never Ever Getting Back Together.mp3'},
-            {title: 'Stay Stay Stay', audio: 'Stay Stay Stay.mp3'},
-            {title: 'Tha Last Time ft. Gary Lightbody', audio: 'The Last Time ft. Gary Lightbody.mp3'},
-            {title: 'Holy Ground', audio: 'Holy Ground.mp3'},
-            {title: 'Sad Beautiful Tragic', audio: 'Sad Beautiful Tragic.mp3'},
-            {title: 'The Lucky One', audio: 'The Lucky One.mp3'},
-            {title: 'Everything Has Changed ft. Ed Sheeran', audio: 'Everything Has Changed ft. Ed Sheeran.mp3'},
-            {title: 'Starlight', audio: 'Starlight.mp3'},
-            {title: 'Begin Again', audio: 'Begin Again.mp3'},
-            {title: 'The Moment I Knew', audio: 'The Moment I Knew.mp3'},
-            {title: 'Come Back... Be Here', audio: 'Come Back...Be Here.mp3'},
-            {title: 'Girl At Home', audio: 'Girl At Home.mp3'},
-            {title: 'Ronan', audio: 'Ronan.mp3'},
-            {title: 'Better Man (From The Vault)', audio: 'Better Man.mp3'},
-            {title: 'Nothing New ft. Phoebe Bridgers (From The Vault)', audio: 'Nothing New.mp3'},
-            {title: 'Message In A Bottle (From The Vault)', audio: 'Babe.mp3'},
-            {title: 'I Bet You Think About Me ft. Chris Stapleton (From The Vault)', audio: 'Message In A Bottle.mp3'},
-            {title: 'Forever Winter (From The Vault)', audio: 'I Bet You Think About Me.mp3'},
-            {title: 'Run ft. Ed Sheeran (From The Vault)', audio: 'Run.mp3'},
-            {title: 'The Very First Night (From The Vault)', audio: 'The Very First Night.mp3'},
-            {title: 'All Too Well (10 Minute Version) (From The Vault)', audio: 'All Too Well (10 Minute Version).mp3'}
+        <div class="polaroid" onclick="openAlbumModal('Red', '2012', 'Pop', 'https://upload.wikimedia.org/wikipedia/en/e/e8/Taylor_Swift_-_Red.png', [
+            {title: 'We Are Never Ever Getting Back Together', youtubeId: 'WA4iX5D9Z64'},
+            {title: 'I Knew You Were Trouble', youtubeId: 'vNoKguSdy4Y'},
+            {title: '22', youtubeId: 'AgFeZr5ptV8'}
         ])">
-            <img src="https://upload.wikimedia.org/wikipedia/en/4/47/Taylor_Swift_-_Red_%28Taylor%27s_Version%29.png" alt="Red Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/e/e8/Taylor_Swift_-_Red.png" alt="Red Album">
             <p class="polaroid-caption">Red</p>
             <p class="polaroid-year">2012 • Pop</p>
             <button class="play-btn">
@@ -501,30 +447,12 @@
         </div>
 
         <!-- Album 5 : 1989 (2014) -->
-        <div class="polaroid" onclick="openAlbumModal('1989', '2014', 'Synthpop', '1989.jpg', [
-            { title: 'Welcome To New York', audio: 'Welcome To New York.mp3'},
-            { title: 'Blank Space', audio: 'Blank Space.mp3'},
-            { title: 'Style', audio: 'Style.mp3'},
-            { title: 'Out Of The Woods', audio: 'Out Of The Woods.mp3'},
-            { title: 'All You Had To Do Was Stay', audio: 'All You Had To Do Was Stay.mp3'},
-            { title: 'Shake It Off', audio: 'Shake It Off.mp3'},
-            { title: 'I Wish You Would', audio: 'I Wish You Would.mp3'},
-            { title: 'Bad Blood', audio: 'Bad Blood.mp3'},
-            { title: 'Wildest Dreams', audio: 'Wildest Dreams.mp3'},
-            { title: 'How You Get The Girl', audio: 'How You Get The Girl.mp3'},
-            { title: 'This Love', audio: 'This Love.mp3'},
-            { title: 'I Know Places', audio: 'I Know Places.mp3'},
-            { title: 'Clean', audio: 'Clean.mp3'},
-            { title: 'Wonderland', audio: 'Wonderland.mp3'},
-            { title: 'You are in love', audio: 'You Are In Love.mp3'},
-            { title: 'New Romantics', audio: 'New Romantics.mp3'},
-            { title: '\'Slut!\' (From The Vault)', audio: 'Slut!.mp3'},
-            { title: 'Say Don\'t Go (From The Vault)', audio: 'Say Don_t Go.mp3'},
-            { title: 'Now That We Don\'t Talk (From The Vault)', audio: 'Now That We Don_t Talk.mp3'},
-            { title: 'Suburban Legends (From The Vault)', audio: 'Suburban Legends.mp3'},
-            { title: 'Is It Over Now ? (From The Vault)', audio: 'Is It Over Now.mp3'}
+        <div class="polaroid" onclick="openAlbumModal('1989', '2014', 'Synthpop', 'https://upload.wikimedia.org/wikipedia/en/f/f6/Taylor_Swift_-_1989.png', [
+            {title: 'Shake It Off', youtubeId: 'nfWlot6h_JM'},
+            {title: 'Blank Space', youtubeId: 'e-ORhEE9VVg'},
+            {title: 'Bad Blood', youtubeId: 'QcIy9NiNbmo'}
         ])">
-            <img src="1989.jpg" alt="1989 Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/f/f6/Taylor_Swift_-_1989.png" alt="1989 Album">
             <p class="polaroid-caption">1989</p>
             <p class="polaroid-year">2014 • Synthpop</p>
             <button class="play-btn">
@@ -533,24 +461,12 @@
         </div>
 
         <!-- Album 6 : Reputation (2017) -->
-        <div class="polaroid" onclick="openAlbumModal('Reputation', '2017', 'Electropop', 'reputation.jpg', [
-            { title: '...Ready For It?', audio: '...Ready For It.mp3' },
-            { title: 'End Game ft. Ed Sheeran, The Future', audio: 'End Game ft. Ed Sheeran, Future.mp3' },
-            { title: 'I Did Something Bad', audio: 'I Did Something Bad.mp3' },
-            { title: 'Don\'t Blame Me', audio: 'Don’t Blame Me.mp3' },
-            { title: 'Delicate', audio: 'Delicate.mp3' },
-            { title: 'Look What You Made Me Do', audio: 'Look What You Made Me Do.mp3' },
-            { title: 'So It Goes...', audio: 'So It Goes....mp3' },
-            { title: 'Gorgeous', audio: 'Gorgeous.mp3' },
-            { title: 'Getaway Car', audio: 'Getaway Car.mp3' },
-            { title: 'King Of My Heart', audio: 'King Of My Heart.mp3' },
-            { title: 'Dancing With Our Hands Tied', audio: 'Dancing With Our Hands Tied.mp3' },
-            { title: 'Dress', audio: 'Dress.mp3' },
-            { title: 'This Is Why We Can\'t Have Nice Things', audio: 'This Is Why We Can_t Have Nice Things.mp3' },
-            { title: 'Call It What You Want', audio: 'Call It What You Want.mp3' },
-            { title: 'New Year\'s Day', audio: 'New Year’s Day.mp3' }
+        <div class="polaroid" onclick="openAlbumModal('Reputation', '2017', 'Electropop', 'https://upload.wikimedia.org/wikipedia/en/f/f2/Taylor_Swift_-_Reputation.png', [
+            {title: 'Look What You Made Me Do', youtubeId: '3tmd-ClpJxA'},
+            {title: '...Ready For It?', youtubeId: 'wIft-t-MQuE'},
+            {title: 'End Game ft. Ed Sheeran', youtubeId: '6tNS3e0f0yY'}
         ])">
-            <img src="reputation.jpg" alt="Reputation Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/f/f2/Taylor_Swift_-_Reputation.png" alt="Reputation Album">
             <p class="polaroid-caption">Reputation</p>
             <p class="polaroid-year">2017 • Electropop</p>
             <button class="play-btn">
@@ -559,28 +475,12 @@
         </div>
 
         <!-- Album 7 : Lover (2019) -->
-        <div class="polaroid" onclick="openAlbumModal('Lover', '2019', 'Pop', 'lover.jpg', [
-            { title: 'I Forgot That You Existed', audio: 'I Forgot That You Existed.mp3' },
-            { title: 'Cruel Summer', audio: 'Cruel Summer.mp3' },
-            { title: 'Lover', audio: 'Lover.mp3' },
-            { title: 'The Man', audio: 'The Man.mp3' },
-            { title: 'The Archer', audio: 'The Archer.mp3' },
-            { title: 'I Think He Knows', audio: 'I Think He Knows.mp3' },
-            { title: 'Miss Americana & The Heartbreak Prince', audio: 'Miss Americana & The Heartbreak Prince.mp3' },
-            { title: 'Paper Rings', audio: 'Paper Rings.mp3' },
-            { title: 'Cornelia Street', audio: 'Cornelia Street.mp3' },
-            { title: 'Death By A Thousand Cuts', audio: 'Death By A Thousand Cuts.mp3' },
-            { title: 'London Boy', audio: 'London Boy.mp3' },
-            { title: 'Soon You\'ll Get Better ft. The Chicks', audio: 'Soon You’ll Get Better ft. The Chicks.mp3' },
-            { title: 'False God', audio: 'False God.mp3' },
-            { title: 'You Need To Calm Down', audio: 'You Need To Calm Down.mp3' },
-            { title: 'Afterglow', audio: 'Afterglow.mp3' },
-            { title: 'ME! ft. Brendon Urie', audio: 'ME! ft. Brendon Urie.mp3' },
-            { title: 'It\'s Nice To Have A Friend', audio: 'It’s Nice To Have A Friend.mp3' },
-            { title: 'Daylight', audio: 'Daylight.mp3' },
-            { title: 'All of the girls you loved before', audio: 'All Of The Girls You Loved Before.mp3' }
+        <div class="polaroid" onclick="openAlbumModal('Lover', '2019', 'Pop', 'https://upload.wikimedia.org/wikipedia/en/c/cd/Taylor_Swift_-_Lover.png', [
+            {title: 'ME! ft. Brendon Urie', youtubeId: 'FnXabHfqo4k'},
+            {title: 'You Need To Calm Down', youtubeId: 'Dkk9gvTmCXY'},
+            {title: 'Lover', youtubeId: '-BjZmE2gtdo'}
         ])">
-            <img src="lover.jpg" alt="Lover Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/c/cd/Taylor_Swift_-_Lover.png" alt="Lover Album">
             <p class="polaroid-caption">Lover</p>
             <p class="polaroid-year">2019 • Pop</p>
             <button class="play-btn">
@@ -589,26 +489,12 @@
         </div>
 
         <!-- Album 8 : Folklore (2020) -->
-        <div class="polaroid" onclick="openAlbumModal('Folklore', '2020', 'Indie Folk', 'folklore.jpg', [
-            { title: 'the 1', audio: 'the 1.mp3' },
-            { title: 'cardigan', audio: 'cardigan.mp3' },
-            { title: 'the last great american dynasty', audio: 'the last great american dynasty.mp3' },
-            { title: 'exile ft. Bon Iver', audio: 'exile ft. Bon iver.mp3' },
-            { title: 'my tears ricochet', audio: 'my tears ricochet.mp3' },
-            { title: 'mirrorball', audio: 'mirrorball.mp3' },
-            { title: 'seven', audio: 'seven.mp3' },
-            { title: 'august', audio: 'august.mp3' },
-            { title: 'this is me trying', audio: 'this is me trying.mp3' },
-            { title: 'illicit affairs', audio: 'illicit affairs.mp3' },
-            { title: 'invisible string', audio: 'invisible string.mp3' },
-            { title: 'mad woman', audio: 'mad woman.mp3' },
-            { title: 'epiphany', audio: 'epiphany.mp3' },
-            { title: 'betty', audio: 'betty.mp3' },
-            { title: 'peace', audio: 'peace.mp3' },
-            { title: 'hoax', audio: 'hoax.mp3' },
-            { title: 'the lakes', audio: 'the lakes.mp3' }
+        <div class="polaroid" onclick="openAlbumModal('Folklore', '2020', 'Indie Folk', 'https://upload.wikimedia.org/wikipedia/en/f/f8/Taylor_Swift_-_Folklore.png', [
+            {title: 'cardigan', youtubeId: 'K-a8s8OLBSE'},
+            {title: 'exile ft. Bon Iver', youtubeId: 'osdoLjUNFnA'},
+            {title: 'the 1', youtubeId: 'KsZ6tROaVOQ'}
         ])">
-            <img src="folklore.jpg" alt="Folklore Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/f/f8/Taylor_Swift_-_Folklore.png" alt="Folklore Album">
             <p class="polaroid-caption">Folklore</p>
             <p class="polaroid-year">2020 • Indie Folk</p>
             <button class="play-btn">
@@ -617,26 +503,12 @@
         </div>
 
         <!-- Album 9 : Evermore (2020) -->
-        <div class="polaroid" onclick="openAlbumModal('Evermore', '2020', 'Indie Folk', 'evermore.jpg', [
-            { title: 'willow', audio: 'willow.mp3' },
-            { title: 'champagne problems', audio: 'champagne problems.mp3' },
-            { title: 'gold rush', audio: 'gold rush.mp3' },
-            { title: '\'tis the damn season', audio: '‘tis the damn season.mp3' },
-            { title: 'tolerate it', audio: 'tolerate it.mp3' },
-            { title: 'no body, no crime ft. HAIM', audio: 'no body, no crime ft. HAIM.mp3' },
-            { title: 'happiness', audio: 'happiness.mp3' },
-            { title: 'dorothea', audio: 'dorothea.mp3' },
-            { title: 'coney island ft. The National', audio: 'coney island ft. The National.mp3' },
-            { title: 'ivy', audio: 'ivy.mp3' },
-            { title: 'cowboy like me', audio: 'cowboy like me.mp3' },
-            { title: 'long story short', audio: 'long story short.mp3' },
-            { title: 'marjorie', audio: 'marjorie.mp3' },
-            { title: 'closure', audio: 'closure.mp3' },
-            { title: 'evermore ft. Bon Iver', audio: 'evermore ft. Bon Iver.mp3' },
-            { title: 'right where you left me', audio: 'right where you left me.mp3' },
-            { title: 'it\'s time to go', audio: 'it’s time to go.mp3' }
+        <div class="polaroid" onclick="openAlbumModal('Evermore', '2020', 'Indie Folk', 'https://upload.wikimedia.org/wikipedia/en/0/0a/Taylor_Swift_-_Evermore.png', [
+            {title: 'willow', youtubeId: 'RsEZmictANA'},
+            {title: 'no body, no crime ft. HAIM', youtubeId: '5B6_zQ_4Q1Q'},
+            {title: 'gold rush', youtubeId: 'air5d4E3Xk0'}
         ])">
-            <img src="evermore.jpg" alt="Evermore Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/0/0a/Taylor_Swift_-_Evermore.png" alt="Evermore Album">
             <p class="polaroid-caption">Evermore</p>
             <p class="polaroid-year">2020 • Indie Folk</p>
             <button class="play-btn">
@@ -645,31 +517,12 @@
         </div>
 
         <!-- Album 10 : Midnights (2022) -->
-        <div class="polaroid" onclick="openAlbumModal('Midnights', '2022', 'Electropop', 'midnights.jpg', [
-            { title: 'Lavender Haze', audio: 'Lavender Haze.mp3' },
-            { title: 'Maroon', audio: 'Maroon.mp3' },
-            { title: 'Anti-Hero', audio: 'Anti-Hero.mp3' },
-            { title: 'Snow On The Beach ft. Lana Del Rey', audio: 'Snow On The Beach ft. Lana Del Rey.mp3' },
-            { title: 'You\'re On Your Own, Kid', audio: 'You_re On Your Own, Kid.mp3' },
-            { title: 'Midnight Rain', audio: 'Midnight Rain.mp3' },
-            { title: 'Question...?', audio: 'Question....mp3' },
-            { title: 'Vigilante Shit', audio: 'Vigilante Shit.mp3' },
-            { title: 'Bejeweled', audio: 'Bejeweled.mp3' },
-            { title: 'Labyrinth', audio: 'Labyrinth.mp3' },
-            { title: 'Karma', audio: 'Karma.mp3' },
-            { title: 'Sweet Nothing', audio: 'Sweet Nothing.mp3' },
-            { title: 'Mastermind', audio: 'Mastermind.mp3' },
-            { title: 'The Great War', audio: 'The Great War.mp3' },
-            { title: 'Bigger Than The Whole Sky', audio: 'Bigger Than The Whole Sky.mp3' },
-            { title: 'Paris', audio: 'Paris.mp3' },
-            { title: 'High Infidelity', audio: 'High Infidelity.mp3' },
-            { title: 'Glitch', audio: 'Glitch.mp3' },
-            { title: 'Would\'ve, Could\'ve, Should\'ve', audio: 'Would_ve, Could_ve, Should_ve.mp3' },
-            { title: 'Dear Reader', audio: 'Dear Reader.mp3' },
-            { title: 'Hits Different', audio: 'Hits Different.mp3' },
-            { title: 'You\'re losing me', audio: 'You_re Losing Me.mp3' }
+        <div class="polaroid" onclick="openAlbumModal('Midnights', '2022', 'Electropop', 'https://upload.wikimedia.org/wikipedia/en/9/9f/Midnights_-_Taylor_Swift.png', [
+            {title: 'Anti-Hero', youtubeId: 'b1kbLwvqugk'},
+            {title: 'Lavender Haze', youtubeId: 'h7BhR1k4Z6E'},
+            {title: 'Karma', youtubeId: '7wzDfK5VnX4'}
         ])">
-            <img src="midnights.jpg" alt="Midnights Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/9/9f/Midnights_-_Taylor_Swift.png" alt="Midnights Album">
             <p class="polaroid-caption">Midnights</p>
             <p class="polaroid-year">2022 • Electropop</p>
             <button class="play-btn">
@@ -678,40 +531,12 @@
         </div>
 
         <!-- Album 11 : The Tortured Poets Department (2024) -->
-        <div class="polaroid" onclick="openAlbumModal('The Tortured Poets Department', '2024', 'Alternative', 'ttpd.jpg', [
-            { title: 'Fortnight ft. Post Malone', audio: 'Fortnight ft. Post Malone.mp3'},
-            { title: 'The Tortured Poets Department', audio: 'The Tortured Poets Department.mp3'},
-            { title: 'My Boy Only Breaks His Favorite Toys', audio: 'My Boy Only Breaks His Favorite Toys.mp3'},
-            { title: 'Down Bad', audio: 'Down Bad.mp3'},
-            { title: 'So Long, London', audio: 'So Long, London.mp3'},
-            { title: 'But Daddy I Love Him', audio: 'But Daddy I Love Him.mp3'},
-            { title: 'Fresh Out The Slammer', audio: 'Fresh Out The Slammer.mp3'},
-            { title: 'Florida!!! ft. Florence and The Machine', audio: 'Florida!!! ft. Florence, The Machine.mp3'},
-            { title: 'Guilty As Sin?', audio: 'Guilty as Sin.mp3'},
-            { title: 'Who\'s Afraid Of Little Old Me?', audio: 'Who’s Afraid of Little Old Me.mp3'},
-            { title: 'I Can Fix Him (No Really I Can)', audio: 'I Can Fix Him (No Really I Can).mp3'},
-            { title: 'loml', audio: 'loml.mp3'},
-            { title: 'I Can Do It With A Broken Heart', audio: 'I Can Do It With a Broken Heart.mp3'},
-            { title: 'The Smallest Man Who Ever Lived', audio: 'The Smallest Man Who Ever Lived.mp3'},
-            { title: 'The Alchemy', audio: 'The Alchemy.mp3'},
-            { title: 'Clara Bow', audio: 'Clara Bow.mp3'},
-            { title: 'The Black Dog', audio: 'The Black Dog.mp3'},
-            { title: 'Imgonnagetyouback', audio: 'imgonnagetyouback.mp3'},
-            { title: 'The Albatross', audio: 'The Albatross.mp3'},
-            { title: 'Chloe or Sam or Sophia or Marcus', audio: 'Chloe or Sam or Sophia or Marcus.mp3'},
-            { title: 'How did it end', audio: 'How Did It End.mp3'},
-            { title: 'So high school', audio: 'So High School.mp3'},
-            { title: 'I hate it here', audio: 'I Hate It Here.mp3'},
-            { title: 'The Prophecy', audio: 'The Prophecy.mp3'},
-            { title: 'thanK you aIMee', audio: 'thanK you aIMee.mp3'},
-            { title: 'I look in people\'s windows', audio: 'Taylor Swift - I Look in People\'s Windows.mp3' },
-            { title: 'Peter', audio: 'Peter.mp3'},
-            { title: 'Cassandra', audio: 'Cassandra.mp3'},
-            { title: 'The Bolter', audio: 'The Bolter.mp3'},
-            { title: 'Robin', audio: 'Robin.mp3'},
-            { title: 'The Manuscript', audio: 'The Manuscript.mp3'}
+        <div class="polaroid" onclick="openAlbumModal('The Tortured Poets Department', '2024', 'Alternative', 'https://upload.wikimedia.org/wikipedia/en/2/2a/The_Tortured_Poets_Department_%28album%29.png', [
+            {title: 'Fortnight ft. Post Malone', youtubeId: 'QUwxKWT6m7U'},
+            {title: 'Down Bad', youtubeId: 'ZQaVKpS9rQ4'},
+            {title: 'So Long, London', youtubeId: '7E8KwvL0H4E'}
         ])">
-            <img src="ttpd.jpg" alt="The Tortured Poets Department Album">
+            <img src="https://upload.wikimedia.org/wikipedia/en/2/2a/The_Tortured_Poets_Department_%28album%29.png" alt="The Tortured Poets Department Album">
             <p class="polaroid-caption">Tortured Poets</p>
             <p class="polaroid-year">2024 • Alternative</p>
             <button class="play-btn">
@@ -758,17 +583,19 @@
                 </div>
             </div>
             <ul class="track-list" id="trackList"></ul>
+            <div class="youtube-container" id="youtubeContainer"></div>
         </div>
     </div>
 
     <footer>
         <div class="social-links">
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-spotify"></i></a>
-            <a href="#"><i class="fab fa-youtube"></i></a>
+            <a href="https://www.instagram.com/taylorswift" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="https://twitter.com/taylorswift13" target="_blank"><i class="fab fa-twitter"></i></a>
+            <a href="https://open.spotify.com/artist/06HL4z0CvFAxyc27GXpf02" target="_blank"><i class="fab fa-spotify"></i></a>
+            <a href="https://www.youtube.com/@TaylorSwift" target="_blank"><i class="fab fa-youtube"></i></a>
         </div>
-        <p>© 2024 Taylor Swift Fan Page</p>
+        <p>© 2024 Taylor Swift Fan Page - Tous droits réservés</p>
+        <p><small>Ce site utilise des vidéos YouTube pour la lecture musicale</small></p>
     </footer>
 
     <script>
@@ -777,6 +604,7 @@
         let currentAlbum = null;
         let isPlaying = false;
         let isShuffleOn = false;
+        let youtubePlayer = null;
 
         // Fonction pour ouvrir un album
         function openAlbumModal(title, year, genre, cover, tracks) {
@@ -802,10 +630,13 @@
             tracks.forEach((track, index) => {
                 const li = document.createElement('li');
                 li.className = 'track-item';
+                if (currentTrack && currentTrack.title === track.title && currentTrack.album === title) {
+                    li.classList.add('now-playing');
+                }
                 li.innerHTML = `
                     <span class="track-number">${index + 1}</span>
                     <span class="track-title">${track.title}</span>
-                    <button class="play-track-btn" onclick="playFromModal(${index}, '${cover}', '${title}', '${track.title}')">
+                    <button class="play-track-btn" onclick="playFromModal('${track.youtubeId}', ${index}, '${cover}', '${title}', '${track.title}')">
                         <i class="fas fa-play"></i>
                     </button>
                 `;
@@ -817,30 +648,85 @@
         }
 
         // Jouer depuis la modal
-        function playFromModal(trackIndex, cover, album, title) {
+        function playFromModal(youtubeId, trackIndex, cover, album, title) {
             currentTrack = {
+                youtubeId,
                 title: title,
                 album: album,
                 cover: cover,
                 index: trackIndex
             };
             
+            // Mettre à jour l'interface
             updatePlayerUI();
-            closeModal();
+            highlightCurrentTrack();
             
+            // Charger la vidéo YouTube
+            const youtubeContainer = document.getElementById('youtubeContainer');
+            youtubeContainer.innerHTML = `
+                <iframe 
+                    width="560" 
+                    height="315" 
+                    src="https://www.youtube.com/embed/${youtubeId}?autoplay=1&enablejsapi=1" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            `;
+            
+            // Marquer comme en lecture
+            isPlaying = true;
+            document.getElementById('playPauseIcon').className = 'fas fa-pause';
+        }
+
+        // Mettre en surbrillance la piste en cours
+        function highlightCurrentTrack() {
+            const trackItems = document.querySelectorAll('.track-item');
+            trackItems.forEach(item => {
+                item.classList.remove('now-playing');
+            });
+            
+            if (currentTrack) {
+                const currentIndex = currentTrack.index;
+                if (trackItems[currentIndex]) {
+                    trackItems[currentIndex].classList.add('now-playing');
+                }
+            }
+        }
 
         // Contrôles de lecture
         function togglePlayPause() {
             if (!currentTrack) {
-                alert("Aucune piste sélectionnée. Cliquez sur une piste dans un album pour commencer la lecture simulée.");
+                // Si aucune piste sélectionnée, jouer la première de l'album si disponible
+                if (currentAlbum && currentAlbum.tracks.length > 0) {
+                    playFromModal(
+                        currentAlbum.tracks[0].youtubeId,
+                        0,
+                        currentAlbum.cover,
+                        currentAlbum.title,
+                        currentAlbum.tracks[0].title
+                    );
+                }
                 return;
             }
             
+            // Avec YouTube iframe, on ne peut pas vraiment mettre en pause depuis l'API
+            // On affiche juste un message
             isPlaying = !isPlaying;
             document.getElementById('playPauseIcon').className = isPlaying ? 'fas fa-pause' : 'fas fa-play';
             
-            // Message de simulation
-            alert(isPlaying ? "Lecture simulée démarrée" : "Lecture simulée en pause");
+            if (!isPlaying) {
+                document.getElementById('youtubeContainer').innerHTML = '';
+            } else {
+                // Recharger la vidéo
+                playFromModal(
+                    currentTrack.youtubeId,
+                    currentTrack.index,
+                    currentTrack.cover,
+                    currentTrack.album,
+                    currentTrack.title
+                );
+            }
         }
 
         function playNext() {
@@ -849,14 +735,13 @@
             const nextIndex = currentTrack.index + 1;
             if (nextIndex < currentAlbum.tracks.length) {
                 const nextTrack = currentAlbum.tracks[nextIndex];
-                currentTrack = {
-                    title: nextTrack.title,
-                    album: currentAlbum.title,
-                    cover: currentAlbum.cover,
-                    index: nextIndex
-                };
-                updatePlayerUI();
-                alert("Lecture simulée de la piste suivante: " + nextTrack.title);
+                playFromModal(
+                    nextTrack.youtubeId,
+                    nextIndex,
+                    currentAlbum.cover,
+                    currentAlbum.title,
+                    nextTrack.title
+                );
             }
         }
 
@@ -866,14 +751,13 @@
             const prevIndex = currentTrack.index - 1;
             if (prevIndex >= 0) {
                 const prevTrack = currentAlbum.tracks[prevIndex];
-                currentTrack = {
-                    title: prevTrack.title,
-                    album: currentAlbum.title,
-                    cover: currentAlbum.cover,
-                    index: prevIndex
-                };
-                updatePlayerUI();
-                alert("Lecture simulée de la piste précédente: " + prevTrack.title);
+                playFromModal(
+                    prevTrack.youtubeId,
+                    prevIndex,
+                    currentAlbum.cover,
+                    currentAlbum.title,
+                    prevTrack.title
+                );
             }
         }
 
@@ -882,8 +766,6 @@
             isShuffleOn = !isShuffleOn;
             const shuffleBtn = document.getElementById('shuffleBtn');
             shuffleBtn.style.color = isShuffleOn ? '#ff6b81' : '';
-            
-            alert(isShuffleOn ? "Mode aléatoire activé" : "Mode aléatoire désactivé");
         }
 
         // UI
