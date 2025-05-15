@@ -727,307 +727,344 @@
         </div>
     </div>
 
-    <!-- Contrôles audio globaux -->
-    <div class="global-audio-controls" id="globalAudioControls" style="display: none;">
-        <div class="audio-info">
-            <img id="currentTrackCover" src="" alt="Album Cover">
-            <div class="track-info">
-                <p class="track-title" id="currentTrackTitle">No track playing</p>
-                <p id="currentTrackAlbum">Taylor Swift</p>
-            </div>
+<!-- Après la dernière polaroid, avant le footer -->
+<div class="global-player" id="globalPlayer" style="display: none;">
+    <div class="player-info">
+        <img id="nowPlayingCover" src="" alt="Album cover">
+        <div class="track-info">
+            <div id="nowPlayingTitle">Aucune lecture en cours</div>
+            <div id="nowPlayingAlbum"></div>
         </div>
-        <div class="audio-controls">
-            <button onclick="playPreviousTrack()"><i class="fas fa-step-backward"></i></button>
-            <button onclick="togglePlayPause()"><i class="fas fa-play" id="globalPlayPauseIcon"></i></button>
-            <button onclick="playNextTrack()"><i class="fas fa-step-forward"></i></button>
-        </div>
-        <div class="audio-extra-controls">
-            <button onclick="toggleShuffle()" title="Shuffle">
-                <i class="fas fa-random" id="shuffleIcon"></i>
+    </div>
+    <div class="player-controls">
+        <button onclick="toggleShuffle()" class="control-btn" id="shuffleBtn" title="Aléatoire">
+            <i class="fas fa-random"></i>
+        </button>
+        <button onclick="playPrevious()" class="control-btn" title="Précédent">
+            <i class="fas fa-step-backward"></i>
+        </button>
+        <button onclick="togglePlayPause()" class="control-btn play-pause" title="Lecture/Pause">
+            <i class="fas fa-play" id="playPauseIcon"></i>
+        </button>
+        <button onclick="playNext()" class="control-btn" title="Suivant">
+            <i class="fas fa-step-forward"></i>
+        </button>
+    </div>
+    <audio id="audioPlayer"></audio>
+</div>
+
+<script>
+// Variables globales
+let allTracks = [];
+let currentTrack = null;
+let currentAlbum = null;
+let isPlaying = false;
+let isShuffleOn = false;
+let shuffledTracks = [];
+let currentShuffleIndex = -1;
+
+// Initialisation
+document.addEventListener('DOMContentLoaded', function() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    
+    audioPlayer.addEventListener('ended', function() {
+        playNext();
+    });
+    
+    audioPlayer.addEventListener('play', function() {
+        isPlaying = true;
+        document.getElementById('playPauseIcon').className = 'fas fa-pause';
+    });
+    
+    audioPlayer.addEventListener('pause', function() {
+        isPlaying = false;
+        document.getElementById('playPauseIcon').className = 'fas fa-play';
+    });
+});
+
+// Fonction pour ouvrir un album
+function openAlbumModal(title, year, genre, cover, tracks) {
+    // Mettre à jour les infos de l'album
+    currentAlbum = {
+        title,
+        year,
+        genre,
+        cover,
+        tracks
+    };
+    
+    // Remplir la modal
+    document.getElementById('modalAlbumTitle').textContent = title;
+    document.getElementById('modalAlbumYear').textContent = year;
+    document.getElementById('modalAlbumGenre').textContent = genre;
+    document.getElementById('modalAlbumCover').src = cover;
+    
+    // Générer la tracklist
+    const trackList = document.getElementById('trackList');
+    trackList.innerHTML = '';
+    
+    tracks.forEach((track, index) => {
+        const li = document.createElement('li');
+        li.className = 'track-item';
+        li.innerHTML = `
+            <span class="track-number">${index + 1}</span>
+            <span class="track-title">${track.title}</span>
+            <button class="play-track-btn" onclick="playFromModal('${track.audio}', ${index}, '${cover}', '${title}', '${track.title}')">
+                <i class="fas fa-play"></i>
             </button>
-            <audio id="globalAudioPlayer" controls style="display: none;"></audio>
-        </div>
-    </div>
-
-    <!-- Modal pour afficher les détails de l'album -->
-    <div id="albumModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <div class="album-header">
-                <img id="modalAlbumCover" class="album-cover" src="" alt="Album Cover">
-                <div class="album-info">
-                    <h2 id="modalAlbumTitle"></h2>
-                    <p id="modalAlbumYear"></p>
-                    <p id="modalAlbumGenre"></p>
-                </div>
-            </div>
-            <h3>Tracklist</h3>
-            <ul class="track-list" id="trackList">
-                <!-- Les pistes seront ajoutées dynamiquement ici -->
-            </ul>
-        </div>
-    </div>
-
-    <footer>
-        <div class="social-links">
-            <a href="#"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-twitter"></i></a>
-            <a href="#"><i class="fab fa-spotify"></i></a>
-        </div>
-        <p>© 2024 Taylor Swift - Tous droits réservés</p>
-    </footer>
-
-    <script>
-        // Variables globales
-        let currentPlayingTrack = null;
-        let currentAlbumTracks = [];
-        let currentAlbumIndex = 0;
-        let currentAlbumInfo = null;
-        let isShuffleOn = false;
-        let originalTrackOrder = [];
-        let isPlaying = false;
-
-        // Audio element
-        const globalAudioPlayer = document.getElementById('globalAudioPlayer');
-        const globalAudioControls = document.getElementById('globalAudioControls');
-
-        // Fonction pour ouvrir la modal de l'album
-        function openAlbumModal(title, year, genre, cover, tracks) {
-            const modal = document.getElementById('albumModal');
-            const modalTitle = document.getElementById('modalAlbumTitle');
-            const modalYear = document.getElementById('modalAlbumYear');
-            const modalGenre = document.getElementById('modalAlbumGenre');
-            const modalCover = document.getElementById('modalAlbumCover');
-            const trackList = document.getElementById('trackList');
-            
-            // Sauvegarder les infos de l'album
-            currentAlbumInfo = { title, year, genre, cover };
-            
-            // Remplir les informations de l'album
-            modalTitle.textContent = title;
-            modalYear.textContent = year;
-            modalGenre.textContent = genre;
-            modalCover.src = cover;
-            
-            // Vider la liste des pistes
-            trackList.innerHTML = '';
-            
-            // Ajouter chaque piste à la liste
-            tracks.forEach((track, index) => {
-                const trackItem = document.createElement('li');
-                trackItem.className = 'track-item';
-                trackItem.dataset.trackIndex = index;
-                trackItem.innerHTML = `
-                    <span class="track-number">${index + 1}</span>
-                    <span class="track-title">${track.title}</span>
-                    <button class="play-track-btn" onclick="playTrack('${track.audio}', this, event, ${index}, '${cover}', '${title}')">
-                        <i class="fas fa-play"></i>
-                    </button>
-                `;
-                trackList.appendChild(trackItem);
-            });
-            
-            // Sauvegarder les pistes pour la lecture en continu
-            currentAlbumTracks = tracks;
-            originalTrackOrder = [...tracks];
-            currentAlbumIndex = 0;
-            
-            // Afficher la modal
-            modal.style.display = 'flex';
-        }
-
-        // Fonction pour jouer une piste
-        function playTrack(audioSrc, button, event, trackIndex, cover, albumTitle) {
-            event.preventDefault();
-            event.stopPropagation();
-            
-            const icon = button ? button.querySelector('i') : null;
-            
-            // Mettre à jour l'index
-            currentAlbumIndex = trackIndex;
-            
-            // Si c'est la même piste qui est déjà en cours de lecture
-            if (currentPlayingTrack === audioSrc) {
-                if (globalAudioPlayer.paused) {
-                    globalAudioPlayer.play();
-                    if (icon) icon.className = 'fas fa-pause';
-                    document.getElementById('globalPlayPauseIcon').className = 'fas fa-pause';
-                    isPlaying = true;
-                } else {
-                    globalAudioPlayer.pause();
-                    if (icon) icon.className = 'fas fa-play';
-                    document.getElementById('globalPlayPauseIcon').className = 'fas fa-play';
-                    isPlaying = false;
-                }
-                return;
-            }
-            
-            // Jouer la nouvelle piste
-            currentPlayingTrack = audioSrc;
-            globalAudioPlayer.src = audioSrc;
-            globalAudioPlayer.play();
-            isPlaying = true;
-            
-            // Mettre à jour les informations dans les contrôles globaux
-            updateGlobalControls(currentAlbumTracks[trackIndex].title, albumTitle, cover);
-            
-            // Changer l'icône en pause
-            if (icon) icon.className = 'fas fa-pause';
-            document.getElementById('globalPlayPauseIcon').className = 'fas fa-pause';
-            
-            // Mettre à jour le style de l'élément en cours de lecture
-            updateNowPlayingStyle(trackIndex);
-            
-            // Gestion des erreurs audio
-            globalAudioPlayer.onerror = function() {
-                console.error("Erreur de lecture audio");
-                if (icon) icon.className = 'fas fa-play';
-                document.getElementById('globalPlayPauseIcon').className = 'fas fa-play';
-                currentPlayingTrack = null;
-                isPlaying = false;
-                playNextTrack();
-            };
-            
-            // Quand la musique se termine
-            globalAudioPlayer.onended = function() {
-                if (icon) icon.className = 'fas fa-play';
-                currentPlayingTrack = null;
-                isPlaying = false;
-                playNextTrack();
-            };
-        }
-
-        // Fonction pour mettre à jour les contrôles globaux
-        function updateGlobalControls(trackTitle, albumTitle, cover) {
-            document.getElementById('currentTrackTitle').textContent = trackTitle;
-            document.getElementById('currentTrackAlbum').textContent = albumTitle;
-            document.getElementById('currentTrackCover').src = cover;
-            globalAudioControls.style.display = 'flex';
-        }
-
-        // Fonction pour mettre à jour le style de l'élément en cours de lecture
-        function updateNowPlayingStyle(trackIndex) {
-            const trackItems = document.querySelectorAll('.track-item');
-            trackItems.forEach(item => {
-                item.classList.remove('now-playing');
-                const itemIndex = parseInt(item.dataset.trackIndex);
-                if (itemIndex === trackIndex) {
-                    item.classList.add('now-playing');
-                }
+        `;
+        trackList.appendChild(li);
+        
+        // Ajouter à la collection globale si absent
+        if (!allTracks.some(t => t.audio === track.audio)) {
+            allTracks.push({
+                audio: track.audio,
+                title: track.title,
+                album: title,
+                cover: cover,
+                year: year,
+                genre: genre
             });
         }
+    });
+    
+    // Afficher la modal
+    document.getElementById('albumModal').style.display = 'flex';
+}
 
-        // Fonction pour jouer la piste suivante
-        function playNextTrack() {
-            if (currentAlbumTracks.length === 0) return;
-            
-            currentAlbumIndex++;
-            
-            if (currentAlbumIndex >= currentAlbumTracks.length) {
-                currentAlbumIndex = 0; // Boucler à la première piste
-            }
-            
-            const nextTrack = currentAlbumTracks[currentAlbumIndex];
-            const nextButton = document.querySelector(`.track-item[data-track-index="${currentAlbumIndex}"] .play-track-btn`);
-            
-            if (nextTrack) {
-                playTrack(nextTrack.audio, nextButton, new Event('click'), currentAlbumIndex, 
-                        currentAlbumInfo.cover, currentAlbumInfo.title);
-            }
+// Jouer depuis la modal
+function playFromModal(audioSrc, trackIndex, cover, album, title) {
+    currentTrack = {
+        audio: audioSrc,
+        title: title,
+        album: album,
+        cover: cover,
+        index: trackIndex
+    };
+    
+    playCurrentTrack();
+    updatePlayerUI();
+    closeModal();
+}
+
+// Contrôles de lecture
+function playCurrentTrack() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    audioPlayer.src = currentTrack.audio;
+    audioPlayer.play();
+    isPlaying = true;
+}
+
+function togglePlayPause() {
+    const audioPlayer = document.getElementById('audioPlayer');
+    if (audioPlayer.paused) {
+        if (!currentTrack && allTracks.length > 0) {
+            // Si aucune piste en cours mais des pistes disponibles
+            currentTrack = isShuffleOn 
+                ? getRandomTrack() 
+                : allTracks[0];
+            playCurrentTrack();
+            updatePlayerUI();
+        } else {
+            audioPlayer.play();
         }
+    } else {
+        audioPlayer.pause();
+    }
+}
 
-        // Fonction pour jouer la piste précédente
-        function playPreviousTrack() {
-            if (currentAlbumTracks.length === 0) return;
-            
-            currentAlbumIndex--;
-            
-            if (currentAlbumIndex < 0) {
-                currentAlbumIndex = currentAlbumTracks.length - 1; // Boucler à la dernière piste
-            }
-            
-            const prevTrack = currentAlbumTracks[currentAlbumIndex];
-            const prevButton = document.querySelector(`.track-item[data-track-index="${currentAlbumIndex}"] .play-track-btn`);
-            
-            if (prevTrack) {
-                playTrack(prevTrack.audio, prevButton, new Event('click'), currentAlbumIndex, 
-                        currentAlbumInfo.cover, currentAlbumInfo.title);
-            }
+function playNext() {
+    if (isShuffleOn) {
+        currentTrack = getRandomTrack();
+    } else if (currentAlbum && currentTrack) {
+        const nextIndex = currentTrack.index + 1;
+        if (nextIndex < currentAlbum.tracks.length) {
+            const nextTrack = currentAlbum.tracks[nextIndex];
+            currentTrack = {
+                audio: nextTrack.audio,
+                title: nextTrack.title,
+                album: currentAlbum.title,
+                cover: currentAlbum.cover,
+                index: nextIndex
+            };
         }
+    }
+    
+    if (currentTrack) {
+        playCurrentTrack();
+        updatePlayerUI();
+    }
+}
 
-        // Fonction pour basculer entre lecture et pause
-        function togglePlayPause() {
-            if (globalAudioPlayer.paused) {
-                globalAudioPlayer.play();
-                document.getElementById('globalPlayPauseIcon').className = 'fas fa-pause';
-                isPlaying = true;
-            } else {
-                globalAudioPlayer.pause();
-                document.getElementById('globalPlayPauseIcon').className = 'fas fa-play';
-                isPlaying = false;
-            }
+function playPrevious() {
+    if (isShuffleOn) {
+        // En mode aléatoire, on ne peut pas vraiment revenir en arrière
+        // On joue une nouvelle piste aléatoire
+        currentTrack = getRandomTrack();
+    } else if (currentAlbum && currentTrack) {
+        const prevIndex = currentTrack.index - 1;
+        if (prevIndex >= 0) {
+            const prevTrack = currentAlbum.tracks[prevIndex];
+            currentTrack = {
+                audio: prevTrack.audio,
+                title: prevTrack.title,
+                album: currentAlbum.title,
+                cover: currentAlbum.cover,
+                index: prevIndex
+            };
         }
+    }
+    
+    if (currentTrack) {
+        playCurrentTrack();
+        updatePlayerUI();
+    }
+}
 
-        // Fonction pour activer/désactiver le mode aléatoire
-        function toggleShuffle() {
-            isShuffleOn = !isShuffleOn;
-            const shuffleIcon = document.getElementById('shuffleIcon');
-            
-            if (isShuffleOn) {
-                shuffleIcon.style.color = '#ff6b81';
-                shuffleTracks();
-            } else {
-                shuffleIcon.style.color = '';
-                // Restaurer l'ordre original
-                currentAlbumTracks = [...originalTrackOrder];
-            }
-        }
+// Mode aléatoire
+function toggleShuffle() {
+    isShuffleOn = !isShuffleOn;
+    const shuffleBtn = document.getElementById('shuffleBtn');
+    shuffleBtn.style.color = isShuffleOn ? '#ff6b81' : '';
+    
+    if (isShuffleOn) {
+        // Préparer une nouvelle liste mélangée
+        shuffledTracks = [...allTracks];
+        shuffleArray(shuffledTracks);
+        currentShuffleIndex = 0;
+    }
+}
 
-        // Fonction pour mélanger les pistes
-        function shuffleTracks() {
-            if (currentAlbumTracks.length === 0) return;
-            
-            // Sauvegarder la piste en cours
-            const currentTrack = currentPlayingTrack ? 
-                currentAlbumTracks.find(track => track.audio === currentPlayingTrack) : null;
-            
-            // Mélanger le tableau
-            for (let i = currentAlbumTracks.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [currentAlbumTracks[i], currentAlbumTracks[j]] = [currentAlbumTracks[j], currentAlbumTracks[i]];
-            }
-            
-            // Remettre la piste en cours en première position si elle existe
-            if (currentTrack) {
-                const currentIndex = currentAlbumTracks.findIndex(track => track.audio === currentTrack.audio);
-                if (currentIndex > 0) {
-                    [currentAlbumTracks[0], currentAlbumTracks[currentIndex]] = 
-                        [currentAlbumTracks[currentIndex], currentAlbumTracks[0]];
-                }
-                currentAlbumIndex = 0;
-            }
-        }
+function getRandomTrack() {
+    if (shuffledTracks.length === 0) return null;
+    
+    if (currentShuffleIndex >= shuffledTracks.length) {
+        // Si on a joué toutes les pistes, on remélange
+        shuffleArray(shuffledTracks);
+        currentShuffleIndex = 0;
+    }
+    
+    return {
+        audio: shuffledTracks[currentShuffleIndex].audio,
+        title: shuffledTracks[currentShuffleIndex].title,
+        album: shuffledTracks[currentShuffleIndex].album,
+        cover: shuffledTracks[currentShuffleIndex].cover
+    };
+    currentShuffleIndex++;
+}
 
-        // Fonction pour fermer la modal
-        function closeModal() {
-            document.getElementById('albumModal').style.display = 'none';
-            // Ne pas arrêter la musique ici
-        }
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+}
 
-        // Fermer la modal si on clique en dehors
-        window.onclick = function(event) {
-            const modal = document.getElementById('albumModal');
-            if (event.target === modal) {
-                closeModal();
-            }
-        }
+// UI
+function updatePlayerUI() {
+    if (currentTrack) {
+        document.getElementById('nowPlayingCover').src = currentTrack.cover;
+        document.getElementById('nowPlayingTitle').textContent = currentTrack.title;
+        document.getElementById('nowPlayingAlbum').textContent = `${currentTrack.album}`;
+        document.getElementById('globalPlayer').style.display = 'flex';
+    }
+}
 
-        // Fermer avec la touche Escape
-        document.addEventListener('keydown', function(event) {
-            if (event.key === "Escape") {
-                closeModal();
-            }
-        });
-    </script>
+function closeModal() {
+    document.getElementById('albumModal').style.display = 'none';
+}
+
+// Fermeture de la modal
+window.onclick = function(event) {
+    if (event.target === document.getElementById('albumModal')) {
+        closeModal();
+    }
+};
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === "Escape") {
+        closeModal();
+    }
+});
+</script>
+
+<style>
+/* Styles pour le lecteur global */
+.global-player {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 1rem;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 1000;
+}
+
+.player-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex: 1;
+}
+
+.player-info img {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+}
+
+.track-info {
+    overflow: hidden;
+}
+
+.track-info div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.player-controls {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+}
+
+.control-btn {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #555;
+    transition: color 0.2s;
+}
+
+.control-btn:hover {
+    color: #ff6b81;
+}
+
+.play-pause {
+    background: #ff9a9e;
+    color: white;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.play-pause:hover {
+    background: #ff6b81;
+    color: white;
+}
+
+#audioPlayer {
+    display: none;
+}
+</style>
 </body>
 </html>
